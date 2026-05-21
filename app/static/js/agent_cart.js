@@ -2,7 +2,7 @@
 (function () {
     const CART_KEY = "kataloga_agent_cart_v1";
     const t = window.AGENT_I18N || {};
-    const currency = t.currency || "СЃРѕРјРѕРЅУЈ";
+    const currency = t.currency || "СЃРѕРјРѕРЅ";
 
     function money(value) {
         const n = Number(value || 0);

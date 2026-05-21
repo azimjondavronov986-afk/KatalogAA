@@ -28,7 +28,7 @@ def format_order_text(order, product, category):
         "",
         f"рџ“¦ Mahsulot: {product.name}",
         f"рџ—‚ Kategoriya: {category.name if category else '-'}",
-        f"рџ’° Narx: {product.price} СЃРѕРјРѕРЅУЈ",
+        f"рџ’° Narx: {product.price} СЃРѕРјРѕРЅ",
         f"рџ”ў Soni: {order.quantity}",
         "",
         f"рџ‘¤ Mijoz: {order.customer_name or '-'}",
@@ -93,12 +93,12 @@ def format_catalog_order_text(order):
         total += item.line_total
         lines.append(
             f"{index}) {item.product_name}\n"
-            f"   {item.quantity} dona Г— {item.price} СЃРѕРјРѕРЅУЈ = {item.line_total} СЃРѕРјРѕРЅУЈ"
+            f"   {item.quantity} dona Г— {item.price} СЃРѕРјРѕРЅ = {item.line_total} СЃРѕРјРѕРЅ"
         )
 
     lines.extend([
         "",
-        f"рџ’° Jami: {total} СЃРѕРјРѕРЅУЈ",
+        f"рџ’° Jami: {total} СЃРѕРјРѕРЅ",
         f"рџ“Њ Status: {order.status}"
     ])
 

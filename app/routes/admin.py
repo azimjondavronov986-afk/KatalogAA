@@ -62,7 +62,7 @@ TEXTS = {
         "new_image": "Yangi rasm",
         "edit_product": "Mahsulotni tahrirlash",
         "first_add_category": "Avval kategoriya qo'shing.",
-        "currency": "СЃРѕРјРѕРЅУЈ",
+        "currency": "СЃРѕРјРѕРЅ",
         "no_image": "Rasm yo'q",
         "admin_login_subtitle": "Tizimga kirish uchun login va parolni kiriting."
     },
@@ -114,7 +114,7 @@ TEXTS = {
         "new_image": "\u041d\u043e\u0432\u043e\u0435 \u0444\u043e\u0442\u043e",
         "edit_product": "\u0418\u0437\u043c\u0435\u043d\u0438\u0442\u044c \u0442\u043e\u0432\u0430\u0440",
         "first_add_category": "\u0421\u043d\u0430\u0447\u0430\u043b\u0430 \u0434\u043e\u0431\u0430\u0432\u044c\u0442\u0435 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044e.",
-        "currency": "\u0441\u043e\u043c\u043e\u043d\u04e3",
+        "currency": "\u0441\u043e\u043c\u043e\u043d",
         "no_image": "\u041d\u0435\u0442 \u0444\u043e\u0442\u043e",
         "admin_login_subtitle": "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043b\u043e\u0433\u0438\u043d \u0438 \u043f\u0430\u0440\u043e\u043b\u044c \u0434\u043b\u044f \u0432\u0445\u043e\u0434\u0430."
     }

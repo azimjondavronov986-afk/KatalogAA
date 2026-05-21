@@ -1,13 +1,64 @@
-<!DOCTYPE html>
-<html lang="{{ lang }}">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ t.brand_subtitle }} - KatalogA</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="/static/css/style.css" rel="stylesheet">
-    <link href="/static/css/agent_creative.css" rel="stylesheet">
-    <link href="/static/css/agent_order.css" rel="stylesheet">
+$root = "D:\My Project\KatalogA"
 
+$py = @'
+from pathlib import Path
+import shutil
+
+root = Path(r"D:\My Project\KatalogA")
+
+TEXT_EXTS = {".py", ".html", ".js", ".css", ".txt", ".md"}
+
+# 1) Valyuta yozuvlarini "сомон" ga o'tkazish
+replacements = {
+    "сомонӣ": "сомон",
+    "сомони": "сомон",
+    "сум": "сомон",
+    "so'm": "somon",
+    "so‘m": "somon",
+    "so’m": "somon",
+
+    r"\u0441\u043e\u043c\u043e\u043d\u04e3": r"\u0441\u043e\u043c\u043e\u043d",
+    r"\u0441\u0443\u043c": r"\u0441\u043e\u043c\u043e\u043d",
+}
+
+updated_files = []
+
+for path in root.rglob("*"):
+    if path.is_file() and path.suffix.lower() in TEXT_EXTS:
+        try:
+            text = path.read_text(encoding="utf-8")
+        except:
+            continue
+
+        original = text
+        for old, new in replacements.items():
+            text = text.replace(old, new)
+
+        if text != original:
+            path.write_text(text, encoding="utf-8")
+            updated_files.append(str(path))
+
+# 2) Agent katalog template ni topish
+catalog_candidates = [
+    root / "app" / "templates" / "agent" / "catalog.html",
+    root / "app" / "templates" / "agent" / "index.html",
+]
+
+catalog_file = None
+for c in catalog_candidates:
+    if c.exists():
+        catalog_file = c
+        break
+
+if not catalog_file:
+    for p in (root / "app" / "templates").rglob("*.html"):
+        if "agent" in str(p).lower() and "catalog" in p.name.lower():
+            catalog_file = p
+            break
+
+style_marker = "/* KATALOGAA_AGENT_MOBILE_POLISH_V2 */"
+
+style_block = r'''
 <style>
 /* KATALOGAA_AGENT_MOBILE_POLISH_V2 */
 
@@ -342,128 +393,56 @@
   }
 }
 </style>
+'''
 
-</head>
-<body class="agent-creative-body">
+if catalog_file and catalog_file.exists():
+    html = catalog_file.read_text(encoding="utf-8")
+    if style_marker not in html:
+        if "</head>" in html:
+            html = html.replace("</head>", style_block + "\n</head>")
+        elif "</body>" in html:
+            html = html.replace("</body>", style_block + "\n</body>")
+        catalog_file.write_text(html, encoding="utf-8")
+        updated_files.append(str(catalog_file))
 
-<div class="agent-creative-header">
-    <div class="agent-creative-header-inner">
-        <div>
-            <div class="agent-brand-mark">KatalogA</div>
-            <div class="agent-brand-text">{{ t.brand_subtitle }}</div>
-        </div>
+# 3) Agar JS ichida "сомонй" yoki boshqa xatolik bo'lsa, tozalash
+js_candidates = [
+    root / "app" / "static" / "js" / "agent_cart.js",
+    root / "app" / "static" / "js" / "agent.js",
+]
 
-        <div class="agent-header-actions">
-            <div class="agent-lang-switch">
-                <a href="/agent?lang=uz{% if selected_category %}&category={{ selected_category }}{% endif %}" class="{% if lang == 'uz' %}active{% endif %}">UZ</a>
-                <a href="/agent?lang=ru{% if selected_category %}&category={{ selected_category }}{% endif %}" class="{% if lang == 'ru' %}active{% endif %}">RU</a>
-            </div>
+for js_file in js_candidates:
+    if js_file.exists():
+        js = js_file.read_text(encoding="utf-8")
+        old = js
+        js = js.replace("сомонӣ", "сомон")
+        js = js.replace("сомони", "сомон")
+        js = js.replace("сум", "сомон")
+        if js != old:
+            js_file.write_text(js, encoding="utf-8")
+            updated_files.append(str(js_file))
 
-            <button class="agent-cart-top-btn" type="button" id="openCartBtn">
-                {{ t.order_btn }}
-                <span id="cartTopCount">0</span>
-            </button>
+# 4) __pycache__ larni tozalash
+for p in root.rglob("__pycache__"):
+    if p.is_dir():
+        shutil.rmtree(p, ignore_errors=True)
 
-            <a class="agent-exit-btn" href="/agent/logout?lang={{ lang }}">{{ t.logout }}</a>
-        </div>
-    </div>
-</div>
+print("UPDATED FILES:")
+for f in updated_files:
+    print(" -", f)
 
-<div class="agent-creative-wrap">
+print("\nOK: Agent katalog sahifasi yaxshilandi, valyuta 'сомон' bo'ldi, +/- mobilga moslashtirildi.")
+'@
 
-    <section class="agent-hero-card">
-        <div class="hero-glow hero-glow-one"></div>
-        <div class="hero-glow hero-glow-two"></div>
+$fixPath = "$root\improve_agent_catalog_mobile.py"
+Set-Content -Encoding UTF8 -Path $fixPath -Value $py
 
-        <div class="hero-content">
-            <span class="hero-label">{{ t.mode }}</span>
-            <h1>{{ t.title }}</h1>
-            <p>{{ t.subtitle }}</p>
-        </div>
-    </section>
+cd $root
+python $fixPath
 
-    <div class="agent-category-bar">
-        <a href="/agent?lang={{ lang }}" class="agent-cat-btn {% if not selected_category %}active{% endif %}">
-            {{ t.all }}
-        </a>
-
-        {% for category in categories %}
-        <a href="/agent?lang={{ lang }}&category={{ category.id }}" class="agent-cat-btn {% if selected_category == category.id|string %}active{% endif %}">
-            {{ category.name }}
-        </a>
-        {% endfor %}
-    </div>
-
-    <div class="agent-products-creative-grid">
-        {% for product in products %}
-        <div class="agent-mini-card order-product-card"
-             data-product-id="{{ product.id }}"
-             data-product-name="{{ product.name }}"
-             data-product-price="{{ product.price }}">
-            <div class="agent-mini-image-box">
-                {% if product.image %}
-                <img class="agent-mini-image" src="/uploads/{{ product.image }}" alt="{{ product.name }}">
-                {% else %}
-                <div class="agent-mini-no-image">{{ t.no_image }}</div>
-                {% endif %}
-            </div>
-
-            <div class="agent-mini-info">
-                <h3>{{ product.name }}</h3>
-                <div class="agent-mini-price">{{ product.price }} {{ t.currency }}</div>
-
-                <div class="qty-control">
-                    <button type="button" class="qty-btn minus-btn" data-product-id="{{ product.id }}">в€’</button>
-                    <span class="qty-number" id="qty-{{ product.id }}">0</span>
-                    <button type="button" class="qty-btn plus-btn" data-product-id="{{ product.id }}">+</button>
-                </div>
-            </div>
-        </div>
-        {% else %}
-        <div class="agent-empty-box">
-            <h3>{{ t.not_found }}</h3>
-            <p>{{ t.not_found_text }}</p>
-        </div>
-        {% endfor %}
-    </div>
-
-</div>
-
-<button class="floating-cart-btn" type="button" id="floatingCartBtn">
-    {{ t.order_btn }}
-    <span id="floatingCartCount">0</span>
-</button>
-
-<div class="cart-modal-overlay" id="cartModal">
-    <div class="cart-modal">
-        <div class="cart-modal-head">
-            <h2>{{ t.order_title }}</h2>
-            <button type="button" class="cart-close-btn" id="closeCartBtn">Г—</button>
-        </div>
-
-        <label class="cart-label">{{ t.store_name }}</label>
-        <input class="cart-input" id="storeNameInput" placeholder="{{ t.store_placeholder }}">
-
-        <h3 class="cart-section-title">{{ t.selected_products }}</h3>
-        <div id="cartItemsBox"></div>
-
-        <div class="cart-total-row">
-            <span>{{ t.total }}</span>
-            <strong id="cartTotalSum">0 {{ t.currency }}</strong>
-        </div>
-
-        <div class="cart-actions">
-            <button type="button" class="cart-clear-btn" id="clearCartBtn">{{ t.clear }}</button>
-            <button type="button" class="cart-confirm-btn" id="confirmOrderBtn">{{ t.confirm_order }}</button>
-        </div>
-    </div>
-</div>
-
-<script>
-    window.AGENT_I18N = {{ t|tojson }};
-    window.AGENT_LANG = "{{ lang }}";
-</script>
-<script src="/static/js/agent_cart.js"></script>
-
-</body>
-</html>
+Write-Host ""
+Write-Host "✅ Agent katalog sahifasi yaxshilandi!" -ForegroundColor Green
+Write-Host "✅ Valyuta 'сомон' ga o'tdi!" -ForegroundColor Green
+Write-Host "✅ +/- tugmalar mobilga moslashtirildi!" -ForegroundColor Green
+Write-Host ""
+Write-Host "Endi GitHubga push qiling." -ForegroundColor Yellow

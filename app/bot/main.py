@@ -318,7 +318,7 @@ async def product_image(message: Message, state: FSMContext, bot: Bot):
         await message.answer(
             f"\u0422\u043e\u0432\u0430\u0440 \u0434\u043e\u0431\u0430\u0432\u043b\u0435\u043d!\n\n"
             f"\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435: {product.name}\n"
-            f"\u0426\u0435\u043d\u0430: {product.price} \u0441\u043e\u043c\u043e\u043d\u04e3",
+            f"\u0426\u0435\u043d\u0430: {product.price} \u0441\u043e\u043c\u043e\u043d",
             reply_markup=menu()
         )
     finally:
@@ -396,7 +396,7 @@ async def product_menu(call: CallbackQuery):
         text = (
             f"\u0422\u043e\u0432\u0430\u0440: {p.name}\n"
             f"\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f: {category_name}\n"
-            f"\u0426\u0435\u043d\u0430: {p.price} \u0441\u043e\u043c\u043e\u043d\u04e3\n"
+            f"\u0426\u0435\u043d\u0430: {p.price} \u0441\u043e\u043c\u043e\u043d\n"
             f"\u0421\u0442\u0430\u0442\u0443\u0441: {status_text}"
         )
 
