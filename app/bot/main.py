@@ -41,10 +41,10 @@ def is_admin(user_id: int):
 def menu():
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="Р”РѕР±Р°РІРёС‚СЊ С‚РѕРІР°СЂ", callback_data="add_product")],
-            [InlineKeyboardButton(text="РўРѕРІР°СЂС‹", callback_data="products_list")],
-            [InlineKeyboardButton(text="Р”РѕР±Р°РІРёС‚СЊ РєР°С‚РµРіРѕСЂРёСЋ", callback_data="add_category")],
-            [InlineKeyboardButton(text="РљР°С‚РµРіРѕСЂРёРё", callback_data="categories_list")],
+            [InlineKeyboardButton(text="\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0442\u043e\u0432\u0430\u0440", callback_data="add_product")],
+            [InlineKeyboardButton(text="\u0422\u043e\u0432\u0430\u0440\u044b", callback_data="products_list")],
+            [InlineKeyboardButton(text="\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044e", callback_data="add_category")],
+            [InlineKeyboardButton(text="\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438", callback_data="categories_list")],
         ]
     )
 
@@ -52,7 +52,7 @@ def menu():
 def back_menu():
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="РќР°Р·Р°Рґ РІ РјРµРЅСЋ", callback_data="main_menu")]
+            [InlineKeyboardButton(text="\u041d\u0430\u0437\u0430\u0434 \u0432 \u043c\u0435\u043d\u044e", callback_data="main_menu")]
         ]
     )
 
@@ -60,10 +60,10 @@ def back_menu():
 @router.message(Command("start"))
 async def start(message: Message):
     if not is_admin(message.from_user.id):
-        await message.answer("РЈ РІР°СЃ РЅРµС‚ РґРѕСЃС‚СѓРїР°.")
+        await message.answer("\u0423 \u0432\u0430\u0441 \u043d\u0435\u0442 \u0434\u043e\u0441\u0442\u0443\u043f\u0430.")
         return
 
-    await message.answer("РџР°РЅРµР»СЊ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР° РєР°С‚Р°Р»РѕРіР°", reply_markup=menu())
+    await message.answer("\u041f\u0430\u043d\u0435\u043b\u044c \u0430\u0434\u043c\u0438\u043d\u0438\u0441\u0442\u0440\u0430\u0442\u043e\u0440\u0430 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0430", reply_markup=menu())
 
 
 @router.callback_query(F.data == "main_menu")
@@ -71,20 +71,20 @@ async def main_menu(call: CallbackQuery, state: FSMContext):
     await state.clear()
 
     if not is_admin(call.from_user.id):
-        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
+        await call.answer("\u041d\u0435\u0442 \u0434\u043e\u0441\u0442\u0443\u043f\u0430", show_alert=True)
         return
 
-    await call.message.answer("Р“Р»Р°РІРЅРѕРµ РјРµРЅСЋ", reply_markup=menu())
+    await call.message.answer("\u0413\u043b\u0430\u0432\u043d\u043e\u0435 \u043c\u0435\u043d\u044e", reply_markup=menu())
     await call.answer()
 
 
 @router.callback_query(F.data == "add_category")
 async def add_category_start(call: CallbackQuery, state: FSMContext):
     if not is_admin(call.from_user.id):
-        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
+        await call.answer("\u041d\u0435\u0442 \u0434\u043e\u0441\u0442\u0443\u043f\u0430", show_alert=True)
         return
 
-    await call.message.answer("РћС‚РїСЂР°РІСЊС‚Рµ РЅР°Р·РІР°РЅРёРµ РєР°С‚РµРіРѕСЂРёРё:")
+    await call.message.answer("\u041e\u0442\u043f\u0440\u0430\u0432\u044c\u0442\u0435 \u043d\u0430\u0437\u0432\u0430\u043d\u0438\u0435 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438:")
     await state.set_state(AddCategory.name)
     await call.answer()
 
@@ -92,7 +92,7 @@ async def add_category_start(call: CallbackQuery, state: FSMContext):
 @router.message(AddCategory.name)
 async def add_category_name(message: Message, state: FSMContext):
     await state.update_data(name=message.text.strip())
-    await message.answer("РћС‚РїСЂР°РІСЊС‚Рµ РѕРїРёСЃР°РЅРёРµ РєР°С‚РµРіРѕСЂРёРё. Р•СЃР»Рё РѕРїРёСЃР°РЅРёРµ РЅРµ РЅСѓР¶РЅРѕ, РѕС‚РїСЂР°РІСЊС‚Рµ -")
+    await message.answer("\u041e\u0442\u043f\u0440\u0430\u0432\u044c\u0442\u0435 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438. \u0415\u0441\u043b\u0438 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043d\u0435 \u043d\u0443\u0436\u043d\u043e, \u043e\u0442\u043f\u0440\u0430\u0432\u044c\u0442\u0435 -")
     await state.set_state(AddCategory.description)
 
 
@@ -113,7 +113,7 @@ async def add_category_finish(message: Message, state: FSMContext):
         db.commit()
 
         await message.answer(
-            f"РљР°С‚РµРіРѕСЂРёСЏ РґРѕР±Р°РІР»РµРЅР°: {category.name}",
+            f"\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f \u0434\u043e\u0431\u0430\u0432\u043b\u0435\u043d\u0430: {category.name}",
             reply_markup=menu()
         )
     finally:
@@ -125,7 +125,7 @@ async def add_category_finish(message: Message, state: FSMContext):
 @router.callback_query(F.data == "categories_list")
 async def categories_list(call: CallbackQuery):
     if not is_admin(call.from_user.id):
-        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
+        await call.answer("\u041d\u0435\u0442 \u0434\u043e\u0441\u0442\u0443\u043f\u0430", show_alert=True)
         return
 
     db = SessionLocal()
@@ -133,24 +133,24 @@ async def categories_list(call: CallbackQuery):
         categories = db.query(Category).order_by(Category.id.desc()).limit(30).all()
 
         if not categories:
-            await call.message.answer("РљР°С‚РµРіРѕСЂРёР№ РїРѕРєР° РЅРµС‚.", reply_markup=back_menu())
+            await call.message.answer("\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0439 \u043f\u043e\u043a\u0430 \u043d\u0435\u0442.", reply_markup=back_menu())
             await call.answer()
             return
 
         buttons = []
         for c in categories:
-            status = "РђРєС‚РёРІРЅР°СЏ" if c.is_active else "РЎРєСЂС‹С‚Р°СЏ"
+            status = "\u0410\u043a\u0442\u0438\u0432\u043d\u0430\u044f" if c.is_active else "\u0421\u043a\u0440\u044b\u0442\u0430\u044f"
             buttons.append([
                 InlineKeyboardButton(
-                    text=f"{c.name} вЂ” {status}",
+                    text=f"{c.name} - {status}",
                     callback_data=f"cat_menu_{c.id}"
                 )
             ])
 
-        buttons.append([InlineKeyboardButton(text="РќР°Р·Р°Рґ РІ РјРµРЅСЋ", callback_data="main_menu")])
+        buttons.append([InlineKeyboardButton(text="\u041d\u0430\u0437\u0430\u0434 \u0432 \u043c\u0435\u043d\u044e", callback_data="main_menu")])
 
         await call.message.answer(
-            "РЎРїРёСЃРѕРє РєР°С‚РµРіРѕСЂРёР№:",
+            "\u0421\u043f\u0438\u0441\u043e\u043a \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0439:",
             reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
         )
     finally:
@@ -162,7 +162,7 @@ async def categories_list(call: CallbackQuery):
 @router.callback_query(F.data.startswith("cat_menu_"))
 async def category_menu(call: CallbackQuery):
     if not is_admin(call.from_user.id):
-        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
+        await call.answer("\u041d\u0435\u0442 \u0434\u043e\u0441\u0442\u0443\u043f\u0430", show_alert=True)
         return
 
     category_id = int(call.data.replace("cat_menu_", ""))
@@ -171,24 +171,24 @@ async def category_menu(call: CallbackQuery):
     try:
         c = db.query(Category).filter(Category.id == category_id).first()
         if not c:
-            await call.message.answer("РљР°С‚РµРіРѕСЂРёСЏ РЅРµ РЅР°Р№РґРµРЅР°.")
+            await call.message.answer("\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430.")
             await call.answer()
             return
 
-        status_text = "РђРєС‚РёРІРЅР°СЏ" if c.is_active else "РЎРєСЂС‹С‚Р°СЏ"
+        status_text = "\u0410\u043a\u0442\u0438\u0432\u043d\u0430\u044f" if c.is_active else "\u0421\u043a\u0440\u044b\u0442\u0430\u044f"
 
         buttons = [
             [
                 InlineKeyboardButton(
-                    text="РЎРєСЂС‹С‚СЊ" if c.is_active else "РђРєС‚РёРІРёСЂРѕРІР°С‚СЊ",
+                    text="\u0421\u043a\u0440\u044b\u0442\u044c" if c.is_active else "\u0410\u043a\u0442\u0438\u0432\u0438\u0440\u043e\u0432\u0430\u0442\u044c",
                     callback_data=f"cat_toggle_{c.id}"
                 )
             ],
-            [InlineKeyboardButton(text="РќР°Р·Р°Рґ Рє РєР°С‚РµРіРѕСЂРёСЏРј", callback_data="categories_list")],
+            [InlineKeyboardButton(text="\u041d\u0430\u0437\u0430\u0434 \u043a \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f\u043c", callback_data="categories_list")],
         ]
 
         await call.message.answer(
-            f"РљР°С‚РµРіРѕСЂРёСЏ: {c.name}\nРЎС‚Р°С‚СѓСЃ: {status_text}",
+            f"\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f: {c.name}\n\u0421\u0442\u0430\u0442\u0443\u0441: {status_text}",
             reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
         )
     finally:
@@ -200,7 +200,7 @@ async def category_menu(call: CallbackQuery):
 @router.callback_query(F.data.startswith("cat_toggle_"))
 async def category_toggle(call: CallbackQuery):
     if not is_admin(call.from_user.id):
-        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
+        await call.answer("\u041d\u0435\u0442 \u0434\u043e\u0441\u0442\u0443\u043f\u0430", show_alert=True)
         return
 
     category_id = int(call.data.replace("cat_toggle_", ""))
@@ -211,7 +211,7 @@ async def category_toggle(call: CallbackQuery):
         if c:
             c.is_active = not c.is_active
             db.commit()
-            await call.message.answer("РЎС‚Р°С‚СѓСЃ РєР°С‚РµРіРѕСЂРёРё РёР·РјРµРЅС‘РЅ.")
+            await call.message.answer("\u0421\u0442\u0430\u0442\u0443\u0441 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438 \u0438\u0437\u043c\u0435\u043d\u0435\u043d.")
     finally:
         db.close()
 
@@ -221,7 +221,7 @@ async def category_toggle(call: CallbackQuery):
 @router.callback_query(F.data == "add_product")
 async def add_product_start(call: CallbackQuery, state: FSMContext):
     if not is_admin(call.from_user.id):
-        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
+        await call.answer("\u041d\u0435\u0442 \u0434\u043e\u0441\u0442\u0443\u043f\u0430", show_alert=True)
         return
 
     db = SessionLocal()
@@ -234,7 +234,7 @@ async def add_product_start(call: CallbackQuery, state: FSMContext):
         )
 
         if not categories:
-            await call.message.answer("РЎРЅР°С‡Р°Р»Р° РґРѕР±Р°РІСЊС‚Рµ РєР°С‚РµРіРѕСЂРёСЋ.", reply_markup=menu())
+            await call.message.answer("\u0421\u043d\u0430\u0447\u0430\u043b\u0430 \u0434\u043e\u0431\u0430\u0432\u044c\u0442\u0435 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044e.", reply_markup=menu())
             await call.answer()
             return
 
@@ -245,7 +245,7 @@ async def add_product_start(call: CallbackQuery, state: FSMContext):
             ])
 
         await call.message.answer(
-            "Р’С‹Р±РµСЂРёС‚Рµ РєР°С‚РµРіРѕСЂРёСЋ С‚РѕРІР°СЂР°:",
+            "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044e \u0442\u043e\u0432\u0430\u0440\u0430:",
             reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
         )
         await state.set_state(AddProduct.category)
@@ -259,7 +259,7 @@ async def add_product_start(call: CallbackQuery, state: FSMContext):
 async def product_category(call: CallbackQuery, state: FSMContext):
     category_id = int(call.data.replace("ap_cat_", ""))
     await state.update_data(category_id=category_id)
-    await call.message.answer("РћС‚РїСЂР°РІСЊС‚Рµ РЅР°Р·РІР°РЅРёРµ С‚РѕРІР°СЂР°:")
+    await call.message.answer("\u041e\u0442\u043f\u0440\u0430\u0432\u044c\u0442\u0435 \u043d\u0430\u0437\u0432\u0430\u043d\u0438\u0435 \u0442\u043e\u0432\u0430\u0440\u0430:")
     await state.set_state(AddProduct.name)
     await call.answer()
 
@@ -267,7 +267,7 @@ async def product_category(call: CallbackQuery, state: FSMContext):
 @router.message(AddProduct.name)
 async def product_name(message: Message, state: FSMContext):
     await state.update_data(name=message.text.strip())
-    await message.answer("РћС‚РїСЂР°РІСЊС‚Рµ С†РµРЅСѓ. РќР°РїСЂРёРјРµСЂ: 25000")
+    await message.answer("\u041e\u0442\u043f\u0440\u0430\u0432\u044c\u0442\u0435 \u0446\u0435\u043d\u0443. \u041d\u0430\u043f\u0440\u0438\u043c\u0435\u0440: 25000")
     await state.set_state(AddProduct.price)
 
 
@@ -276,7 +276,7 @@ async def product_price(message: Message, state: FSMContext):
     digits = re.sub(r"\D", "", message.text or "")
     price = int(digits) if digits else 0
     await state.update_data(price=price)
-    await message.answer("РћС‚РїСЂР°РІСЊС‚Рµ РѕРїРёСЃР°РЅРёРµ С‚РѕРІР°СЂР°. Р•СЃР»Рё РѕРїРёСЃР°РЅРёРµ РЅРµ РЅСѓР¶РЅРѕ, РѕС‚РїСЂР°РІСЊС‚Рµ -")
+    await message.answer("\u041e\u0442\u043f\u0440\u0430\u0432\u044c\u0442\u0435 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u0442\u043e\u0432\u0430\u0440\u0430. \u0415\u0441\u043b\u0438 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043d\u0435 \u043d\u0443\u0436\u043d\u043e, \u043e\u0442\u043f\u0440\u0430\u0432\u044c\u0442\u0435 -")
     await state.set_state(AddProduct.description)
 
 
@@ -284,7 +284,7 @@ async def product_price(message: Message, state: FSMContext):
 async def product_description(message: Message, state: FSMContext):
     description = "" if message.text.strip() == "-" else message.text.strip()
     await state.update_data(description=description)
-    await message.answer("РћС‚РїСЂР°РІСЊС‚Рµ С„РѕС‚Рѕ С‚РѕРІР°СЂР°. Р•СЃР»Рё С„РѕС‚Рѕ РЅРµ РЅСѓР¶РЅРѕ, РѕС‚РїСЂР°РІСЊС‚Рµ -")
+    await message.answer("\u041e\u0442\u043f\u0440\u0430\u0432\u044c\u0442\u0435 \u0444\u043e\u0442\u043e \u0442\u043e\u0432\u0430\u0440\u0430. \u0415\u0441\u043b\u0438 \u0444\u043e\u0442\u043e \u043d\u0435 \u043d\u0443\u0436\u043d\u043e, \u043e\u0442\u043f\u0440\u0430\u0432\u044c\u0442\u0435 -")
     await state.set_state(AddProduct.image)
 
 
@@ -316,9 +316,9 @@ async def product_image(message: Message, state: FSMContext, bot: Bot):
         db.commit()
 
         await message.answer(
-            f"РўРѕРІР°СЂ РґРѕР±Р°РІР»РµРЅ!\n\n"
-            f"РќР°Р·РІР°РЅРёРµ: {product.name}\n"
-            f"Р¦РµРЅР°: {product.price} СЃСѓРј",
+            f"\u0422\u043e\u0432\u0430\u0440 \u0434\u043e\u0431\u0430\u0432\u043b\u0435\u043d!\n\n"
+            f"\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435: {product.name}\n"
+            f"\u0426\u0435\u043d\u0430: {product.price} \u0441\u0443\u043c",
             reply_markup=menu()
         )
     finally:
@@ -330,7 +330,7 @@ async def product_image(message: Message, state: FSMContext, bot: Bot):
 @router.callback_query(F.data == "products_list")
 async def products_list(call: CallbackQuery):
     if not is_admin(call.from_user.id):
-        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
+        await call.answer("\u041d\u0435\u0442 \u0434\u043e\u0441\u0442\u0443\u043f\u0430", show_alert=True)
         return
 
     db = SessionLocal()
@@ -338,24 +338,24 @@ async def products_list(call: CallbackQuery):
         products = db.query(Product).order_by(Product.id.desc()).limit(30).all()
 
         if not products:
-            await call.message.answer("РўРѕРІР°СЂРѕРІ РїРѕРєР° РЅРµС‚.", reply_markup=back_menu())
+            await call.message.answer("\u0422\u043e\u0432\u0430\u0440\u043e\u0432 \u043f\u043e\u043a\u0430 \u043d\u0435\u0442.", reply_markup=back_menu())
             await call.answer()
             return
 
         buttons = []
         for p in products:
-            status = "РђРєС‚РёРІРЅС‹Р№" if p.is_active else "РЎРєСЂС‹С‚С‹Р№"
+            status = "\u0410\u043a\u0442\u0438\u0432\u043d\u044b\u0439" if p.is_active else "\u0421\u043a\u0440\u044b\u0442\u044b\u0439"
             buttons.append([
                 InlineKeyboardButton(
-                    text=f"{p.name} вЂ” {status}",
+                    text=f"{p.name} - {status}",
                     callback_data=f"prod_menu_{p.id}"
                 )
             ])
 
-        buttons.append([InlineKeyboardButton(text="РќР°Р·Р°Рґ РІ РјРµРЅСЋ", callback_data="main_menu")])
+        buttons.append([InlineKeyboardButton(text="\u041d\u0430\u0437\u0430\u0434 \u0432 \u043c\u0435\u043d\u044e", callback_data="main_menu")])
 
         await call.message.answer(
-            "РЎРїРёСЃРѕРє С‚РѕРІР°СЂРѕРІ:",
+            "\u0421\u043f\u0438\u0441\u043e\u043a \u0442\u043e\u0432\u0430\u0440\u043e\u0432:",
             reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
         )
     finally:
@@ -367,7 +367,7 @@ async def products_list(call: CallbackQuery):
 @router.callback_query(F.data.startswith("prod_menu_"))
 async def product_menu(call: CallbackQuery):
     if not is_admin(call.from_user.id):
-        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
+        await call.answer("\u041d\u0435\u0442 \u0434\u043e\u0441\u0442\u0443\u043f\u0430", show_alert=True)
         return
 
     product_id = int(call.data.replace("prod_menu_", ""))
@@ -376,28 +376,28 @@ async def product_menu(call: CallbackQuery):
     try:
         p = db.query(Product).filter(Product.id == product_id).first()
         if not p:
-            await call.message.answer("РўРѕРІР°СЂ РЅРµ РЅР°Р№РґРµРЅ.")
+            await call.message.answer("\u0422\u043e\u0432\u0430\u0440 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d.")
             await call.answer()
             return
 
-        status_text = "РђРєС‚РёРІРЅС‹Р№" if p.is_active else "РЎРєСЂС‹С‚С‹Р№"
+        status_text = "\u0410\u043a\u0442\u0438\u0432\u043d\u044b\u0439" if p.is_active else "\u0421\u043a\u0440\u044b\u0442\u044b\u0439"
         category_name = p.category.name if p.category else "-"
 
         buttons = [
             [
                 InlineKeyboardButton(
-                    text="РЎРєСЂС‹С‚СЊ" if p.is_active else "РђРєС‚РёРІРёСЂРѕРІР°С‚СЊ",
+                    text="\u0421\u043a\u0440\u044b\u0442\u044c" if p.is_active else "\u0410\u043a\u0442\u0438\u0432\u0438\u0440\u043e\u0432\u0430\u0442\u044c",
                     callback_data=f"prod_toggle_{p.id}"
                 )
             ],
-            [InlineKeyboardButton(text="РќР°Р·Р°Рґ Рє С‚РѕРІР°СЂР°Рј", callback_data="products_list")],
+            [InlineKeyboardButton(text="\u041d\u0430\u0437\u0430\u0434 \u043a \u0442\u043e\u0432\u0430\u0440\u0430\u043c", callback_data="products_list")],
         ]
 
         text = (
-            f"РўРѕРІР°СЂ: {p.name}\n"
-            f"РљР°С‚РµРіРѕСЂРёСЏ: {category_name}\n"
-            f"Р¦РµРЅР°: {p.price} СЃСѓРј\n"
-            f"РЎС‚Р°С‚СѓСЃ: {status_text}"
+            f"\u0422\u043e\u0432\u0430\u0440: {p.name}\n"
+            f"\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f: {category_name}\n"
+            f"\u0426\u0435\u043d\u0430: {p.price} \u0441\u0443\u043c\n"
+            f"\u0421\u0442\u0430\u0442\u0443\u0441: {status_text}"
         )
 
         image_path = settings.UPLOAD_DIR / p.image if p.image else None
@@ -422,7 +422,7 @@ async def product_menu(call: CallbackQuery):
 @router.callback_query(F.data.startswith("prod_toggle_"))
 async def product_toggle(call: CallbackQuery):
     if not is_admin(call.from_user.id):
-        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
+        await call.answer("\u041d\u0435\u0442 \u0434\u043e\u0441\u0442\u0443\u043f\u0430", show_alert=True)
         return
 
     product_id = int(call.data.replace("prod_toggle_", ""))
@@ -433,7 +433,7 @@ async def product_toggle(call: CallbackQuery):
         if p:
             p.is_active = not p.is_active
             db.commit()
-            await call.message.answer("РЎС‚Р°С‚СѓСЃ С‚РѕРІР°СЂР° РёР·РјРµРЅС‘РЅ.")
+            await call.message.answer("\u0421\u0442\u0430\u0442\u0443\u0441 \u0442\u043e\u0432\u0430\u0440\u0430 \u0438\u0437\u043c\u0435\u043d\u0435\u043d.")
     finally:
         db.close()
 
@@ -442,12 +442,12 @@ async def product_toggle(call: CallbackQuery):
 
 async def start_bot():
     if not settings.BOT_TOKEN or settings.BOT_TOKEN == "YOUR_BOT_TOKEN_HERE":
-        print("BOT_TOKEN РЅРµ СѓРєР°Р·Р°РЅ. Р‘РѕС‚ РЅРµ Р·Р°РїСѓС‰РµРЅ.")
+        print("BOT_TOKEN is not set. Bot is not started.")
         return
 
     bot = Bot(token=settings.BOT_TOKEN)
     dp = Dispatcher(storage=MemoryStorage())
     dp.include_router(router)
 
-    print("Telegram Р±РѕС‚ Р·Р°РїСѓС‰РµРЅ")
+    print("Telegram bot started")
     await dp.start_polling(bot)
