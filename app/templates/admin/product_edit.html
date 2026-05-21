@@ -1,0 +1,38 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="admin-page-head">
+    <h1>{{ t.edit_product }}</h1>
+</div>
+
+<form class="form-box" method="post" action="/admin/products/{{ product.id }}/edit?lang={{ lang }}" enctype="multipart/form-data">
+    <label>{{ t.category }}</label>
+    <select name="category_id" required>
+        {% for category in categories %}
+        <option value="{{ category.id }}" {% if product.category_id == category.id %}selected{% endif %}>
+            {{ category.name }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <label>{{ t.product_name }}</label>
+    <input name="name" value="{{ product.name }}" required>
+
+    <label>{{ t.price }}</label>
+    <input name="price" type="number" value="{{ product.price }}">
+
+    <label>{{ t.description }}</label>
+    <textarea name="description">{{ product.description or "" }}</textarea>
+
+    {% if product.image %}
+    <p>{{ t.current_image }}</p>
+    <img src="/uploads/{{ product.image }}" style="width:180px;border-radius:14px;">
+    {% endif %}
+
+    <label>{{ t.new_image }}</label>
+    <input name="image" type="file" accept="image/*">
+
+    <button class="btn btn-green" type="submit">{{ t.save }}</button>
+    <a class="btn btn-light" href="/admin/products?lang={{ lang }}">{{ t.back }}</a>
+</form>
+{% endblock %}

@@ -1,0 +1,38 @@
+﻿{% extends "admin/base.html" %}
+
+{% block content %}
+<h1>Buyurtmalar</h1>
+
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <th>Mahsulot</th>
+        <th>Mijoz</th>
+        <th>Telefon</th>
+        <th>Soni</th>
+        <th>Status</th>
+        <th>Amal</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>#{{ order.id }}</td>
+        <td>{{ order.product.name if order.product else "-" }}</td>
+        <td>{{ order.customer_name or "-" }}</td>
+        <td>{{ order.customer_phone or "-" }}</td>
+        <td>{{ order.quantity }}</td>
+        <td><span class="badge">{{ order.status }}</span></td>
+        <td>
+            <form method="post" action="/admin/orders/{{ order.id }}/status">
+                <select name="status">
+                    <option value="new" {% if order.status == "new" %}selected{% endif %}>Yangi</option>
+                    <option value="accepted" {% if order.status == "accepted" %}selected{% endif %}>Qabul qilindi</option>
+                    <option value="done" {% if order.status == "done" %}selected{% endif %}>Bajarildi</option>
+                    <option value="cancelled" {% if order.status == "cancelled" %}selected{% endif %}>Bekor qilindi</option>
+                </select>
+                <button class="btn btn-green" type="submit">Saqlash</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

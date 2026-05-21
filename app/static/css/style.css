@@ -1,0 +1,534 @@
+﻿* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f3f5f7;
+    color: #111827;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.header {
+    background: #111827;
+    color: white;
+    padding: 18px 24px;
+}
+
+.container {
+    width: min(1180px, 94%);
+    margin: 0 auto;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav a {
+    margin-left: 16px;
+    opacity: .9;
+}
+
+.hero {
+    background: linear-gradient(135deg, #111827, #374151);
+    color: white;
+    padding: 54px 0;
+    margin-bottom: 28px;
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin: 0 0 12px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 18px;
+}
+
+.card {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, .08);
+}
+
+.card-body {
+    padding: 16px;
+}
+
+.product-img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    background: #e5e7eb;
+}
+
+.product-img-large {
+    width: 100%;
+    height: 360px;
+    object-fit: cover;
+    background: #e5e7eb;
+}
+
+.price {
+    font-size: 22px;
+    font-weight: 800;
+    color: #16a34a;
+}
+
+.btn {
+    display: inline-block;
+    border: none;
+    border-radius: 12px;
+    padding: 11px 16px;
+    background: #111827;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    margin: 3px;
+}
+
+.btn-light {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.btn-green {
+    background: #16a34a;
+}
+
+.btn-red {
+    background: #dc2626;
+}
+
+.btn-orange {
+    background: #f97316;
+}
+
+.form-box {
+    background: white;
+    padding: 22px;
+    border-radius: 18px;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, .08);
+    margin-bottom: 22px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    margin: 7px 0 14px;
+}
+
+textarea {
+    min-height: 90px;
+}
+
+.table {
+    width: 100%;
+    background: white;
+    border-collapse: collapse;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+    vertical-align: top;
+}
+
+.admin-layout {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    min-height: 100vh;
+}
+
+.sidebar {
+    background: #111827;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+}
+
+.sidebar a:hover {
+    background: #374151;
+}
+
+.content {
+    padding: 24px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.stat {
+    background: white;
+    padding: 20px;
+    border-radius: 18px;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, .08);
+}
+
+.stat h2 {
+    margin: 0;
+    font-size: 34px;
+}
+
+.badge {
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: #e5e7eb;
+    display: inline-block;
+    font-size: 13px;
+}
+
+.agent-top {
+    background: #111827;
+    color: white;
+    padding: 20px 0;
+    margin-bottom: 24px;
+}
+
+.category-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.category-tabs a {
+    background: white;
+    padding: 10px 14px;
+    border-radius: 999px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, .07);
+}
+
+.category-tabs a.active {
+    background: #111827;
+    color: white;
+}
+
+@media (max-width: 760px) {
+    .admin-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+}
+
+/* =========================
+   AGENT MOBILE CATALOG DESIGN
+   ========================= */
+
+.agent-body {
+    background: #f3f5f7;
+    color: #111827;
+    padding-bottom: 32px;
+}
+
+.agent-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(17, 24, 39, 0.96);
+    backdrop-filter: blur(12px);
+    color: white;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
+}
+
+.agent-header-inner {
+    width: min(1180px, 94%);
+    margin: 0 auto;
+    min-height: 74px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.agent-logo {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+}
+
+.agent-subtitle {
+    font-size: 13px;
+    opacity: 0.78;
+    margin-top: 4px;
+}
+
+.agent-logout {
+    background: rgba(255,255,255,0.12);
+    color: white;
+    padding: 10px 14px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.agent-container {
+    width: min(1180px, 94%);
+    margin: 0 auto;
+}
+
+.agent-title-box {
+    margin: 22px 0 16px;
+    background: linear-gradient(135deg, #ffffff, #f9fafb);
+    padding: 22px;
+    border-radius: 24px;
+    box-shadow: 0 12px 34px rgba(15, 23, 42, 0.07);
+}
+
+.agent-title-box h1 {
+    margin: 0;
+    font-size: 32px;
+    letter-spacing: -0.8px;
+}
+
+.agent-title-box p {
+    margin: 8px 0 0;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+.agent-category-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 4px 0 16px;
+    margin-bottom: 8px;
+    scrollbar-width: none;
+}
+
+.agent-category-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.agent-category-pill {
+    flex: 0 0 auto;
+    background: white;
+    color: #111827;
+    padding: 11px 16px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 800;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+    border: 1px solid #eef2f7;
+}
+
+.agent-category-pill.active {
+    background: #111827;
+    color: white;
+    border-color: #111827;
+}
+
+.agent-products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.agent-product-card {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+    border: 1px solid #edf0f4;
+    transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.agent-product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 38px rgba(15, 23, 42, 0.13);
+}
+
+.agent-product-image-box {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: linear-gradient(135deg, #f8fafc, #eef2f7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 12px;
+}
+
+.agent-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    border-radius: 16px;
+}
+
+.agent-no-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    background: #e5e7eb;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+}
+
+.agent-product-info {
+    padding: 14px 15px 16px;
+}
+
+.agent-product-info h3 {
+    margin: 0 0 8px;
+    font-size: 17px;
+    line-height: 1.28;
+    min-height: 44px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: #111827;
+}
+
+.agent-product-price {
+    font-size: 19px;
+    font-weight: 900;
+    color: #16a34a;
+    letter-spacing: -0.3px;
+}
+
+.agent-empty {
+    grid-column: 1 / -1;
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    text-align: center;
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+}
+
+.agent-empty h3 {
+    margin: 0 0 6px;
+}
+
+.agent-empty p {
+    margin: 0;
+    color: #6b7280;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .agent-products-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* Mobile */
+@media (max-width: 680px) {
+    .agent-header-inner {
+        min-height: 66px;
+    }
+
+    .agent-logo {
+        font-size: 21px;
+    }
+
+    .agent-subtitle {
+        font-size: 12px;
+    }
+
+    .agent-title-box {
+        margin: 14px 0 12px;
+        padding: 18px;
+        border-radius: 20px;
+    }
+
+    .agent-title-box h1 {
+        font-size: 24px;
+    }
+
+    .agent-title-box p {
+        font-size: 14px;
+    }
+
+    .agent-products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .agent-product-card {
+        border-radius: 18px;
+    }
+
+    .agent-product-image-box {
+        padding: 9px;
+        aspect-ratio: 1 / 1;
+    }
+
+    .agent-product-image {
+        border-radius: 12px;
+    }
+
+    .agent-product-info {
+        padding: 11px 11px 13px;
+    }
+
+    .agent-product-info h3 {
+        font-size: 14px;
+        min-height: 38px;
+        margin-bottom: 6px;
+    }
+
+    .agent-product-price {
+        font-size: 15px;
+    }
+
+    .agent-category-pill {
+        padding: 9px 13px;
+        font-size: 13px;
+    }
+
+    .agent-logout {
+        padding: 8px 11px;
+        font-size: 13px;
+    }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+    .agent-products-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .agent-product-info h3 {
+        font-size: 13px;
+    }
+
+    .agent-product-price {
+        font-size: 14px;
+    }
+}

@@ -1,0 +1,33 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="admin-page-head">
+    <h1>{{ t.dashboard }}</h1>
+</div>
+
+<div class="stats">
+    <div class="stat">
+        <p>{{ t.total_categories }}</p>
+        <h2>{{ categories_count }}</h2>
+    </div>
+
+    <div class="stat">
+        <p>{{ t.total_products }}</p>
+        <h2>{{ products_count }}</h2>
+    </div>
+
+    <div class="stat">
+        <p>{{ t.active_products }}</p>
+        <h2>{{ active_products_count }}</h2>
+    </div>
+</div>
+
+<div class="form-box">
+    <h2>{{ t.panel_status }}</h2>
+    <p>{{ t.panel_text_1 }}</p>
+    <p>{{ t.panel_text_2 }}</p>
+
+    <a class="btn btn-green" href="/admin/products?lang={{ lang }}">{{ t.add_product }}</a>
+    <a class="btn btn-light" href="/agent?lang={{ lang }}" target="_blank">{{ t.view_agent_catalog }}</a>
+</div>
+{% endblock %}

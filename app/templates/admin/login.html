@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ t.admin_panel }} - KatalogA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/admin_lang.css" rel="stylesheet">
+</head>
+<body class="admin-login-body">
+
+<div class="admin-login-lang">
+    <a href="/admin/login?lang=uz" class="{% if lang == 'uz' %}active{% endif %}">UZ</a>
+    <a href="/admin/login?lang=ru" class="{% if lang == 'ru' %}active{% endif %}">RU</a>
+</div>
+
+<div class="container" style="padding-top: 18px; max-width: 430px;">
+    <form class="form-box admin-login-card" method="post" action="/admin/login">
+        <input type="hidden" name="lang" value="{{ lang }}">
+
+        <div class="admin-login-logo">KatalogA</div>
+        <h1>{{ t.admin_panel }}</h1>
+        <p>{{ t.admin_login_subtitle }}</p>
+
+        {% if error %}
+        <p class="admin-error">{{ error }}</p>
+        {% endif %}
+
+        <label>{{ t.login }}</label>
+        <input name="username" required>
+
+        <label>{{ t.password }}</label>
+        <input name="password" type="password" required>
+
+        <button class="btn" type="submit">{{ t.enter }}</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,77 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="admin-page-head">
+    <h1>{{ t.products }}</h1>
+</div>
+
+<form class="form-box" method="post" action="/admin/products/add?lang={{ lang }}" enctype="multipart/form-data">
+    <h3>{{ t.new_product }}</h3>
+
+    {% if categories|length == 0 %}
+    <p style="color:red;">{{ t.first_add_category }}</p>
+    {% endif %}
+
+    <label>{{ t.category }}</label>
+    <select name="category_id" required>
+        {% for category in categories %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label>{{ t.product_name }}</label>
+    <input name="name" required>
+
+    <label>{{ t.price }}</label>
+    <input name="price" type="number" value="0">
+
+    <label>{{ t.description }}</label>
+    <textarea name="description"></textarea>
+
+    <label>{{ t.image }}</label>
+    <input name="image" type="file" accept="image/*">
+
+    <button class="btn btn-green" type="submit">{{ t.add_product }}</button>
+</form>
+
+<table class="table">
+    <tr>
+        <th>{{ t.id }}</th>
+        <th>{{ t.image }}</th>
+        <th>{{ t.name }}</th>
+        <th>{{ t.category }}</th>
+        <th>{{ t.price }}</th>
+        <th>{{ t.status }}</th>
+        <th>{{ t.action }}</th>
+    </tr>
+
+    {% for product in products %}
+    <tr>
+        <td>{{ product.id }}</td>
+
+        <td>
+            {% if product.image %}
+            <img src="/uploads/{{ product.image }}" style="width:80px;height:60px;object-fit:cover;border-radius:10px;">
+            {% else %}
+            {{ t.no_image }}
+            {% endif %}
+        </td>
+
+        <td>{{ product.name }}</td>
+        <td>{{ product.category.name if product.category else "-" }}</td>
+        <td>{{ product.price }} {{ t.currency }}</td>
+        <td>{{ t.active if product.is_active else t.hidden }}</td>
+
+        <td>
+            <a class="btn btn-light" href="/admin/products/{{ product.id }}/edit?lang={{ lang }}">{{ t.edit }}</a>
+
+            <form method="post" action="/admin/products/{{ product.id }}/toggle?lang={{ lang }}" style="display:inline;">
+                <button class="btn btn-orange" type="submit">
+                    {{ t.hide if product.is_active else t.activate }}
+                </button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

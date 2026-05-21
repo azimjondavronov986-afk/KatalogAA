@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ t.admin_panel }} - KatalogA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/admin_lang.css" rel="stylesheet">
+</head>
+<body>
+<div class="admin-layout">
+    <div class="sidebar">
+        <h2>KatalogA</h2>
+
+        <div class="admin-side-lang">
+            <a href="{{ request.url.path }}?lang=uz" class="{% if lang == 'uz' %}active{% endif %}">UZ</a>
+            <a href="{{ request.url.path }}?lang=ru" class="{% if lang == 'ru' %}active{% endif %}">RU</a>
+        </div>
+
+        <a href="/admin?lang={{ lang }}">{{ t.dashboard }}</a>
+        <a href="/admin/categories?lang={{ lang }}">{{ t.categories }}</a>
+        <a href="/admin/products?lang={{ lang }}">{{ t.products }}</a>
+        <a href="/agent?lang={{ lang }}" target="_blank">{{ t.agent_panel }}</a>
+        <a href="/" target="_blank">{{ t.view_site }}</a>
+        <a href="/admin/logout?lang={{ lang }}">{{ t.logout }}</a>
+    </div>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+</body>
+</html>

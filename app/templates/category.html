@@ -1,0 +1,28 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<div class="container" style="padding-top: 28px;">
+    <h1>{{ category.name }}</h1>
+    <p>{{ category.description or "" }}</p>
+
+    <div class="grid">
+        {% for product in products %}
+        <div class="card">
+            {% if product.image %}
+            <img class="product-img" src="/uploads/{{ product.image }}">
+            {% else %}
+            <div class="product-img"></div>
+            {% endif %}
+
+            <div class="card-body">
+                <h3>{{ product.name }}</h3>
+                <p class="price">{{ product.price }} soвЂm</p>
+                <a class="btn btn-light" href="/product/{{ product.id }}">Batafsil</a>
+            </div>
+        </div>
+        {% else %}
+        <p>Bu kategoriyada mahsulot yoвЂq.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

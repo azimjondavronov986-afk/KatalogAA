@@ -1,0 +1,23 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<div class="container" style="padding-top: 28px;">
+    <h1>Buyurtma berish</h1>
+    <h3>{{ product.name }}</h3>
+
+    <form class="form-box" method="post" action="/order/{{ product.id }}">
+        {% for field in fields %}
+            <label>{{ field }}</label>
+
+            {% if "Izoh" in field or "Manzil" in field %}
+                <textarea name="{{ field }}"></textarea>
+            {% else %}
+                <input name="{{ field }}" required>
+            {% endif %}
+        {% endfor %}
+
+        <button class="btn btn-green" type="submit">Buyurtmani yuborish</button>
+        <a class="btn btn-light" href="/product/{{ product.id }}">Orqaga</a>
+    </form>
+</div>
+{% endblock %}

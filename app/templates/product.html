@@ -1,0 +1,21 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<div class="container" style="padding-top: 28px;">
+    <div class="card">
+        {% if product.image %}
+        <img class="product-img-large" src="/uploads/{{ product.image }}">
+        {% else %}
+        <div class="product-img-large"></div>
+        {% endif %}
+
+        <div class="card-body">
+            <h1>{{ product.name }}</h1>
+            <p class="price">{{ product.price }} soвЂm</p>
+            <p>{{ product.description or "" }}</p>
+
+            <a class="btn btn-light" href="/">Orqaga</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

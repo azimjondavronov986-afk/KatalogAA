@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ t.brand_subtitle }} - KatalogA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/agent_creative.css" rel="stylesheet">
+    <link href="/static/css/agent_order.css" rel="stylesheet">
+</head>
+<body class="agent-creative-body">
+
+<div class="agent-creative-header">
+    <div class="agent-creative-header-inner">
+        <div>
+            <div class="agent-brand-mark">KatalogA</div>
+            <div class="agent-brand-text">{{ t.brand_subtitle }}</div>
+        </div>
+
+        <div class="agent-header-actions">
+            <div class="agent-lang-switch">
+                <a href="/agent?lang=uz{% if selected_category %}&category={{ selected_category }}{% endif %}" class="{% if lang == 'uz' %}active{% endif %}">UZ</a>
+                <a href="/agent?lang=ru{% if selected_category %}&category={{ selected_category }}{% endif %}" class="{% if lang == 'ru' %}active{% endif %}">RU</a>
+            </div>
+
+            <button class="agent-cart-top-btn" type="button" id="openCartBtn">
+                {{ t.order_btn }}
+                <span id="cartTopCount">0</span>
+            </button>
+
+            <a class="agent-exit-btn" href="/agent/logout?lang={{ lang }}">{{ t.logout }}</a>
+        </div>
+    </div>
+</div>
+
+<div class="agent-creative-wrap">
+
+    <section class="agent-hero-card">
+        <div class="hero-glow hero-glow-one"></div>
+        <div class="hero-glow hero-glow-two"></div>
+
+        <div class="hero-content">
+            <span class="hero-label">{{ t.mode }}</span>
+            <h1>{{ t.title }}</h1>
+            <p>{{ t.subtitle }}</p>
+        </div>
+    </section>
+
+    <div class="agent-category-bar">
+        <a href="/agent?lang={{ lang }}" class="agent-cat-btn {% if not selected_category %}active{% endif %}">
+            {{ t.all }}
+        </a>
+
+        {% for category in categories %}
+        <a href="/agent?lang={{ lang }}&category={{ category.id }}" class="agent-cat-btn {% if selected_category == category.id|string %}active{% endif %}">
+            {{ category.name }}
+        </a>
+        {% endfor %}
+    </div>
+
+    <div class="agent-products-creative-grid">
+        {% for product in products %}
+        <div class="agent-mini-card order-product-card"
+             data-product-id="{{ product.id }}"
+             data-product-name="{{ product.name }}"
+             data-product-price="{{ product.price }}">
+            <div class="agent-mini-image-box">
+                {% if product.image %}
+                <img class="agent-mini-image" src="/uploads/{{ product.image }}" alt="{{ product.name }}">
+                {% else %}
+                <div class="agent-mini-no-image">{{ t.no_image }}</div>
+                {% endif %}
+            </div>
+
+            <div class="agent-mini-info">
+                <h3>{{ product.name }}</h3>
+                <div class="agent-mini-price">{{ product.price }} {{ t.currency }}</div>
+
+                <div class="qty-control">
+                    <button type="button" class="qty-btn minus-btn" data-product-id="{{ product.id }}">в€’</button>
+                    <span class="qty-number" id="qty-{{ product.id }}">0</span>
+                    <button type="button" class="qty-btn plus-btn" data-product-id="{{ product.id }}">+</button>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="agent-empty-box">
+            <h3>{{ t.not_found }}</h3>
+            <p>{{ t.not_found_text }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<button class="floating-cart-btn" type="button" id="floatingCartBtn">
+    {{ t.order_btn }}
+    <span id="floatingCartCount">0</span>
+</button>
+
+<div class="cart-modal-overlay" id="cartModal">
+    <div class="cart-modal">
+        <div class="cart-modal-head">
+            <h2>{{ t.order_title }}</h2>
+            <button type="button" class="cart-close-btn" id="closeCartBtn">Г—</button>
+        </div>
+
+        <label class="cart-label">{{ t.store_name }}</label>
+        <input class="cart-input" id="storeNameInput" placeholder="{{ t.store_placeholder }}">
+
+        <h3 class="cart-section-title">{{ t.selected_products }}</h3>
+        <div id="cartItemsBox"></div>
+
+        <div class="cart-total-row">
+            <span>{{ t.total }}</span>
+            <strong id="cartTotalSum">0 {{ t.currency }}</strong>
+        </div>
+
+        <div class="cart-actions">
+            <button type="button" class="cart-clear-btn" id="clearCartBtn">{{ t.clear }}</button>
+            <button type="button" class="cart-confirm-btn" id="confirmOrderBtn">{{ t.confirm_order }}</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.AGENT_I18N = {{ t|tojson }};
+    window.AGENT_LANG = "{{ lang }}";
+</script>
+<script src="/static/js/agent_cart.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ t.login_title }} - KatalogA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/agent_creative.css" rel="stylesheet">
+</head>
+<body class="agent-creative-body">
+
+<div class="agent-login-lang">
+    <a href="/agent/login?lang=uz" class="{% if lang == 'uz' %}active{% endif %}">UZ</a>
+    <a href="/agent/login?lang=ru" class="{% if lang == 'ru' %}active{% endif %}">RU</a>
+</div>
+
+<div class="agent-login-wrap">
+    <form class="agent-login-card" method="post" action="/agent/login">
+        <input type="hidden" name="lang" value="{{ lang }}">
+
+        <div class="agent-login-logo">KatalogA</div>
+        <h1>{{ t.login_title }}</h1>
+        <p>{{ t.login_subtitle }}</p>
+
+        {% if error %}
+        <div class="agent-login-error">{{ error }}</div>
+        {% endif %}
+
+        <label>{{ t.login }}</label>
+        <input name="username" required>
+
+        <label>{{ t.password }}</label>
+        <input name="password" type="password" required>
+
+        <button class="agent-login-btn" type="submit">{{ t.enter }}</button>
+    </form>
+</div>
+
+</body>
+</html>

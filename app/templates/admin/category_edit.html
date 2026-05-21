@@ -1,0 +1,21 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="admin-page-head">
+    <h1>{{ t.edit_category }}</h1>
+</div>
+
+<form class="form-box" method="post" action="/admin/categories/{{ category.id }}/edit?lang={{ lang }}">
+    <label>{{ t.name }}</label>
+    <input name="name" value="{{ category.name }}" required>
+
+    <label>{{ t.description }}</label>
+    <textarea name="description">{{ category.description or "" }}</textarea>
+
+    <label>{{ t.sort_order }}</label>
+    <input name="sort_order" type="number" value="{{ category.sort_order }}">
+
+    <button class="btn btn-green" type="submit">{{ t.save }}</button>
+    <a class="btn btn-light" href="/admin/categories?lang={{ lang }}">{{ t.back }}</a>
+</form>
+{% endblock %}

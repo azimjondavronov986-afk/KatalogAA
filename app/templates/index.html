@@ -1,0 +1,42 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<div class="hero">
+    <div class="container">
+        <h1>Mahsulotlar katalogi</h1>
+        <p>Mahsulot rasmi, nomi va narxini koвЂring. Hozircha web orqali buyurtma olinmaydi.</p>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Kategoriyalar</h2>
+
+    <div class="category-tabs">
+        {% for category in categories %}
+        <a href="/category/{{ category.id }}">{{ category.name }}</a>
+        {% endfor %}
+    </div>
+
+    <h2>Mahsulotlar</h2>
+
+    <div class="grid">
+        {% for product in products %}
+        <div class="card">
+            {% if product.image %}
+            <img class="product-img" src="/uploads/{{ product.image }}">
+            {% else %}
+            <div class="product-img"></div>
+            {% endif %}
+
+            <div class="card-body">
+                <h3>{{ product.name }}</h3>
+                <p class="price">{{ product.price }} soвЂm</p>
+                <a class="btn btn-light" href="/product/{{ product.id }}">Batafsil</a>
+            </div>
+        </div>
+        {% else %}
+        <p>Hali mahsulot qoвЂshilmagan.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

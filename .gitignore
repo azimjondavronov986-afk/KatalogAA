@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+data/
+fix_*.py
+fix_*.ps1
+*_fix.py
+*_fix.ps1
