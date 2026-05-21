@@ -39,15 +39,12 @@ def is_admin(user_id: int):
 
 
 def menu():
-    catalog_url = "https://katalogaa-production.up.railway.app/agent?lang=ru"
-
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="Каталог", url=catalog_url)],
-            [InlineKeyboardButton(text="Добавить товар", callback_data="add_product")],
-            [InlineKeyboardButton(text="Товары", callback_data="products_list")],
-            [InlineKeyboardButton(text="Добавить категорию", callback_data="add_category")],
-            [InlineKeyboardButton(text="Категории", callback_data="categories_list")],
+            [InlineKeyboardButton(text="\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0442\u043e\u0432\u0430\u0440", callback_data="add_product")],
+            [InlineKeyboardButton(text="\u0422\u043e\u0432\u0430\u0440\u044b", callback_data="products_list")],
+            [InlineKeyboardButton(text="\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044e", callback_data="add_category")],
+            [InlineKeyboardButton(text="\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438", callback_data="categories_list")],
         ]
     )
 
