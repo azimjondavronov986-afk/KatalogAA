@@ -343,6 +343,340 @@
 }
 </style>
 
+
+<style>
+/* KATALOGAA_AGENT_PRETTY_V3 */
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(34,197,94,0.10), transparent 28%),
+    radial-gradient(circle at top right, rgba(59,130,246,0.10), transparent 24%),
+    linear-gradient(180deg, #f5f8fb 0%, #eef3f7 100%) !important;
+}
+
+.container, .page-container, .catalog-wrapper, .agent-wrapper {
+  max-width: 1240px !important;
+}
+
+.hero, .hero-card, .catalog-hero, .banner-card {
+  border-radius: 28px !important;
+  overflow: hidden !important;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.10) !important;
+}
+
+.product-grid,
+.products-grid,
+.catalog-grid,
+.cards-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)) !important;
+  gap: 18px !important;
+  align-items: stretch !important;
+}
+
+.product-card,
+.catalog-card,
+.item-card,
+.product-item {
+  background: rgba(255,255,255,0.96) !important;
+  border-radius: 24px !important;
+  border: 1px solid rgba(226,232,240,0.9) !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.07) !important;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease !important;
+  overflow: hidden !important;
+  padding-bottom: 12px !important;
+  height: 100% !important;
+}
+
+.product-card:hover,
+.catalog-card:hover,
+.item-card:hover,
+.product-item:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.12) !important;
+  border-color: rgba(34,197,94,0.35) !important;
+}
+
+.product-card img,
+.catalog-card img,
+.item-card img,
+.product-image,
+.product-thumb,
+.card-image img {
+  width: 100% !important;
+  height: 165px !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
+  padding: 14px !important;
+  border-radius: 18px !important;
+}
+
+.product-title,
+.card-title,
+.product-name,
+.item-title {
+  text-align: center !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+  line-height: 1.25 !important;
+  min-height: 48px !important;
+  margin: 10px 8px 6px !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.product-price,
+.card-price,
+.item-price,
+.price {
+  text-align: center !important;
+  font-weight: 800 !important;
+  color: #16a34a !important;
+  font-size: 28px !important;
+  line-height: 1.1 !important;
+  margin: 0 8px 12px !important;
+  white-space: nowrap !important;
+}
+
+.qty-controls,
+.order-controls,
+.counter-controls,
+.quantity-controls,
+.product-actions {
+  display: grid !important;
+  grid-template-columns: 52px 1fr 52px !important;
+  gap: 8px !important;
+  align-items: center !important;
+  width: calc(100% - 22px) !important;
+  margin: 0 auto !important;
+}
+
+.qty-btn,
+.counter-btn,
+.minus-btn,
+.plus-btn,
+.quantity-btn,
+.product-actions button,
+.qty-controls button,
+.order-controls button,
+.counter-controls button,
+.quantity-controls button {
+  min-width: 52px !important;
+  min-height: 52px !important;
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 16px !important;
+  border: none !important;
+  outline: none !important;
+  background: linear-gradient(180deg, #0f172a 0%, #172554 100%) !important;
+  color: #ffffff !important;
+  font-size: 30px !important;
+  font-weight: 900 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.22) !important;
+  user-select: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  touch-action: manipulation !important;
+  padding: 0 !important;
+}
+
+.qty-btn:hover,
+.counter-btn:hover,
+.minus-btn:hover,
+.plus-btn:hover,
+.quantity-btn:hover,
+.product-actions button:hover,
+.qty-controls button:hover,
+.order-controls button:hover,
+.counter-controls button:hover,
+.quantity-controls button:hover {
+  transform: translateY(-1px) !important;
+  filter: brightness(1.04) !important;
+}
+
+.qty-btn:active,
+.counter-btn:active,
+.minus-btn:active,
+.plus-btn:active,
+.quantity-btn:active,
+.product-actions button:active,
+.qty-controls button:active,
+.order-controls button:active,
+.counter-controls button:active,
+.quantity-controls button:active {
+  transform: scale(0.97) !important;
+}
+
+.qty-count,
+.qty-value,
+.counter-value,
+.quantity-value {
+  min-height: 52px !important;
+  border-radius: 16px !important;
+  background: #f1f5f9 !important;
+  border: 1px solid #dbe4ee !important;
+  color: #0f172a !important;
+  font-size: 22px !important;
+  font-weight: 800 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.categories-row,
+.category-list,
+.category-tabs,
+.filters-row {
+  display: flex !important;
+  gap: 10px !important;
+  overflow-x: auto !important;
+  padding-bottom: 8px !important;
+  scrollbar-width: thin !important;
+}
+
+.category-chip,
+.category-btn,
+.category-tab,
+.filters-row a,
+.filters-row button {
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+  border-radius: 999px !important;
+}
+
+.cart-fab,
+.order-fab,
+.floating-cart,
+.cart-button-fixed {
+  right: 16px !important;
+  bottom: 16px !important;
+  min-height: 54px !important;
+  padding: 0 18px !important;
+  border-radius: 999px !important;
+  font-weight: 800 !important;
+  box-shadow: 0 12px 28px rgba(34,197,94,0.28) !important;
+}
+
+@media (max-width: 900px) {
+  .product-grid,
+  .products-grid,
+  .catalog-grid,
+  .cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+  }
+
+  .product-card img,
+  .catalog-card img,
+  .item-card img,
+  .product-image,
+  .product-thumb,
+  .card-image img {
+    height: 135px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .product-grid,
+  .products-grid,
+  .catalog-grid,
+  .cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+
+  .product-card,
+  .catalog-card,
+  .item-card,
+  .product-item {
+    border-radius: 18px !important;
+  }
+
+  .product-card img,
+  .catalog-card img,
+  .item-card img,
+  .product-image,
+  .product-thumb,
+  .card-image img {
+    height: 118px !important;
+    padding: 10px !important;
+  }
+
+  .product-title,
+  .card-title,
+  .product-name,
+  .item-title {
+    font-size: 15px !important;
+    min-height: 38px !important;
+    margin-top: 8px !important;
+  }
+
+  .product-price,
+  .card-price,
+  .item-price,
+  .price {
+    font-size: 18px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .qty-controls,
+  .order-controls,
+  .counter-controls,
+  .quantity-controls,
+  .product-actions {
+    grid-template-columns: 44px 1fr 44px !important;
+    gap: 6px !important;
+    width: calc(100% - 16px) !important;
+  }
+
+  .qty-btn,
+  .counter-btn,
+  .minus-btn,
+  .plus-btn,
+  .quantity-btn,
+  .product-actions button,
+  .qty-controls button,
+  .order-controls button,
+  .counter-controls button,
+  .quantity-controls button {
+    min-width: 44px !important;
+    min-height: 44px !important;
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 26px !important;
+    border-radius: 14px !important;
+  }
+
+  .qty-count,
+  .qty-value,
+  .counter-value,
+  .quantity-value {
+    min-height: 44px !important;
+    font-size: 18px !important;
+    border-radius: 14px !important;
+  }
+
+  .cart-fab,
+  .order-fab,
+  .floating-cart,
+  .cart-button-fixed {
+    right: 12px !important;
+    bottom: 12px !important;
+    min-height: 48px !important;
+    padding: 0 14px !important;
+    font-size: 15px !important;
+  }
+}
+</style>
+
 </head>
 <body class="agent-creative-body">
 
@@ -464,6 +798,93 @@
     window.AGENT_LANG = "{{ lang }}";
 </script>
 <script src="/static/js/agent_cart.js"></script>
+
+
+<script>
+/* KATALOGAA_AGENT_BUTTON_FIX_V3 */
+document.addEventListener("DOMContentLoaded", function () {
+  function normalizeCurrency() {
+    document.querySelectorAll("*").forEach(function(el) {
+      if (el.children.length === 0 && el.textContent) {
+        let t = el.textContent;
+        let changed = t
+          .replace(/СЃРѕРјРѕРЅУЈ/gi, "СЃРѕРјРѕРЅ")
+          .replace(/СЃРѕРјРѕРЅРё/gi, "СЃРѕРјРѕРЅ")
+          .replace(/СЃРѕРјРѕРЅР№/gi, "СЃРѕРјРѕРЅ")
+          .replace(/СЃСѓРј/gi, "СЃРѕРјРѕРЅ");
+        if (changed !== t) el.textContent = changed;
+      }
+    });
+  }
+
+  function likelyControlContainer(el) {
+    if (!el) return false;
+    const cls = (el.className || "").toString().toLowerCase();
+    return cls.includes("qty") ||
+           cls.includes("count") ||
+           cls.includes("counter") ||
+           cls.includes("quantity") ||
+           cls.includes("action") ||
+           cls.includes("order");
+  }
+
+  function normalizeButtons() {
+    const allContainers = Array.from(document.querySelectorAll("div, section, article"));
+    allContainers.forEach(function(container) {
+      if (!likelyControlContainer(container)) return;
+
+      const buttons = Array.from(container.querySelectorAll("button"));
+      if (buttons.length < 2) return;
+
+      const visibleButtons = buttons.filter(function(btn) {
+        return btn.offsetParent !== null;
+      });
+
+      if (visibleButtons.length >= 2) {
+        const firstBtn = visibleButtons[0];
+        const lastBtn = visibleButtons[visibleButtons.length - 1];
+
+        firstBtn.textContent = "-";
+        lastBtn.textContent = "+";
+
+        firstBtn.setAttribute("aria-label", "minus");
+        lastBtn.setAttribute("aria-label", "plus");
+
+        firstBtn.classList.add("minus-btn");
+        lastBtn.classList.add("plus-btn");
+      }
+    });
+
+    // Fallback: agar yuqoridagi bilan topilmasa, karta ichidagi 2 ta tugmani ushlaymiz
+    const cards = document.querySelectorAll(".product-card, .catalog-card, .item-card, .product-item");
+    cards.forEach(function(card) {
+      const btns = Array.from(card.querySelectorAll("button")).filter(function(btn) {
+        return btn.offsetParent !== null;
+      });
+
+      if (btns.length >= 2) {
+        btns[0].textContent = "-";
+        btns[btns.length - 1].textContent = "+";
+        btns[0].classList.add("minus-btn");
+        btns[btns.length - 1].classList.add("plus-btn");
+      }
+    });
+  }
+
+  normalizeCurrency();
+  normalizeButtons();
+
+  setTimeout(function(){
+    normalizeCurrency();
+    normalizeButtons();
+  }, 400);
+
+  setTimeout(function(){
+    normalizeCurrency();
+    normalizeButtons();
+  }, 1200);
+});
+</script>
 
 </body>
 </html>

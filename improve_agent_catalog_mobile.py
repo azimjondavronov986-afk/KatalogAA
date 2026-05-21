@@ -402,7 +402,7 @@ if catalog_file and catalog_file.exists():
         catalog_file.write_text(html, encoding="utf-8")
         updated_files.append(str(catalog_file))
 
-# 3) Agar JS ichida "СЃРѕРјРѕРЅР№" yoki boshqa xatolik bo'lsa, tozalash
+# 3) Agar JS ichida "СЃРѕРјРѕРЅ" yoki boshqa xatolik bo'lsa, tozalash
 js_candidates = [
     root / "app" / "static" / "js" / "agent_cart.js",
     root / "app" / "static" / "js" / "agent.js",
