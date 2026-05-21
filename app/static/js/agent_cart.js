@@ -4,7 +4,12 @@
     const t = window.AGENT_I18N || {};
     const currency = t.currency || "СЃРѕРјРѕРЅ";
 
-    function money(value) {
+    
+    function unitLabel() {
+        return window.AGENT_LANG === "uz" ? "dona" : "\u0448\u0442";
+    }
+
+function money(value) {
         const n = Number(value || 0);
         return n.toLocaleString("ru-RU") + " " + currency;
     }
