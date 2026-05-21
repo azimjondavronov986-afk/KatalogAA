@@ -1,6 +1,5 @@
-
+# -*- coding: utf-8 -*-
 import re
-from pathlib import Path
 
 from aiogram import Bot, Dispatcher, Router, F
 from aiogram.filters import Command
@@ -11,7 +10,8 @@ from aiogram.types import (
     Message,
     CallbackQuery,
     InlineKeyboardMarkup,
-    InlineKeyboardButton
+    InlineKeyboardButton,
+    FSInputFile,
 )
 
 from app.config import settings
@@ -41,10 +41,10 @@ def is_admin(user_id: int):
 def menu():
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="вћ• Mahsulot qo'shish", callback_data="add_product")],
-            [InlineKeyboardButton(text="рџ“¦ Mahsulotlar", callback_data="products_list")],
-            [InlineKeyboardButton(text="вћ• Kategoriya qo'shish", callback_data="add_category")],
-            [InlineKeyboardButton(text="рџ—‚ Kategoriyalar", callback_data="categories_list")]
+            [InlineKeyboardButton(text="Р”РѕР±Р°РІРёС‚СЊ С‚РѕРІР°СЂ", callback_data="add_product")],
+            [InlineKeyboardButton(text="РўРѕРІР°СЂС‹", callback_data="products_list")],
+            [InlineKeyboardButton(text="Р”РѕР±Р°РІРёС‚СЊ РєР°С‚РµРіРѕСЂРёСЋ", callback_data="add_category")],
+            [InlineKeyboardButton(text="РљР°С‚РµРіРѕСЂРёРё", callback_data="categories_list")],
         ]
     )
 
@@ -52,7 +52,7 @@ def menu():
 def back_menu():
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="в¬…пёЏ Bosh menyu", callback_data="main_menu")]
+            [InlineKeyboardButton(text="РќР°Р·Р°Рґ РІ РјРµРЅСЋ", callback_data="main_menu")]
         ]
     )
 
@@ -60,10 +60,10 @@ def back_menu():
 @router.message(Command("start"))
 async def start(message: Message):
     if not is_admin(message.from_user.id):
-        await message.answer("Sizga ruxsat yo'q.")
+        await message.answer("РЈ РІР°СЃ РЅРµС‚ РґРѕСЃС‚СѓРїР°.")
         return
 
-    await message.answer("KatalogA admin bot", reply_markup=menu())
+    await message.answer("РџР°РЅРµР»СЊ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР° РєР°С‚Р°Р»РѕРіР°", reply_markup=menu())
 
 
 @router.callback_query(F.data == "main_menu")
@@ -71,20 +71,20 @@ async def main_menu(call: CallbackQuery, state: FSMContext):
     await state.clear()
 
     if not is_admin(call.from_user.id):
-        await call.answer("Ruxsat yo'q", show_alert=True)
+        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
         return
 
-    await call.message.answer("Bosh menyu", reply_markup=menu())
+    await call.message.answer("Р“Р»Р°РІРЅРѕРµ РјРµРЅСЋ", reply_markup=menu())
     await call.answer()
 
 
 @router.callback_query(F.data == "add_category")
 async def add_category_start(call: CallbackQuery, state: FSMContext):
     if not is_admin(call.from_user.id):
-        await call.answer("Ruxsat yo'q", show_alert=True)
+        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
         return
 
-    await call.message.answer("Kategoriya nomini yuboring:")
+    await call.message.answer("РћС‚РїСЂР°РІСЊС‚Рµ РЅР°Р·РІР°РЅРёРµ РєР°С‚РµРіРѕСЂРёРё:")
     await state.set_state(AddCategory.name)
     await call.answer()
 
@@ -92,7 +92,7 @@ async def add_category_start(call: CallbackQuery, state: FSMContext):
 @router.message(AddCategory.name)
 async def add_category_name(message: Message, state: FSMContext):
     await state.update_data(name=message.text.strip())
-    await message.answer("Kategoriya tavsifini yuboring. Kerak bo'lmasa - yuboring:")
+    await message.answer("РћС‚РїСЂР°РІСЊС‚Рµ РѕРїРёСЃР°РЅРёРµ РєР°С‚РµРіРѕСЂРёРё. Р•СЃР»Рё РѕРїРёСЃР°РЅРёРµ РЅРµ РЅСѓР¶РЅРѕ, РѕС‚РїСЂР°РІСЊС‚Рµ -")
     await state.set_state(AddCategory.description)
 
 
@@ -107,12 +107,15 @@ async def add_category_finish(message: Message, state: FSMContext):
             name=data["name"],
             description=description,
             is_active=True,
-            sort_order=0
+            sort_order=0,
         )
         db.add(category)
         db.commit()
 
-        await message.answer(f"вњ… Kategoriya qo'shildi: {category.name}", reply_markup=menu())
+        await message.answer(
+            f"РљР°С‚РµРіРѕСЂРёСЏ РґРѕР±Р°РІР»РµРЅР°: {category.name}",
+            reply_markup=menu()
+        )
     finally:
         db.close()
 
@@ -122,7 +125,7 @@ async def add_category_finish(message: Message, state: FSMContext):
 @router.callback_query(F.data == "categories_list")
 async def categories_list(call: CallbackQuery):
     if not is_admin(call.from_user.id):
-        await call.answer("Ruxsat yo'q", show_alert=True)
+        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
         return
 
     db = SessionLocal()
@@ -130,21 +133,24 @@ async def categories_list(call: CallbackQuery):
         categories = db.query(Category).order_by(Category.id.desc()).limit(30).all()
 
         if not categories:
-            await call.message.answer("Kategoriya yo'q.", reply_markup=back_menu())
+            await call.message.answer("РљР°С‚РµРіРѕСЂРёР№ РїРѕРєР° РЅРµС‚.", reply_markup=back_menu())
             await call.answer()
             return
 
         buttons = []
         for c in categories:
-            status = "вњ…" if c.is_active else "рџљ«"
+            status = "РђРєС‚РёРІРЅР°СЏ" if c.is_active else "РЎРєСЂС‹С‚Р°СЏ"
             buttons.append([
-                InlineKeyboardButton(text=f"{status} {c.name}", callback_data=f"cat_menu_{c.id}")
+                InlineKeyboardButton(
+                    text=f"{c.name} вЂ” {status}",
+                    callback_data=f"cat_menu_{c.id}"
+                )
             ])
 
-        buttons.append([InlineKeyboardButton(text="в¬…пёЏ Bosh menyu", callback_data="main_menu")])
+        buttons.append([InlineKeyboardButton(text="РќР°Р·Р°Рґ РІ РјРµРЅСЋ", callback_data="main_menu")])
 
         await call.message.answer(
-            "Kategoriyalar:",
+            "РЎРїРёСЃРѕРє РєР°С‚РµРіРѕСЂРёР№:",
             reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
         )
     finally:
@@ -156,7 +162,7 @@ async def categories_list(call: CallbackQuery):
 @router.callback_query(F.data.startswith("cat_menu_"))
 async def category_menu(call: CallbackQuery):
     if not is_admin(call.from_user.id):
-        await call.answer("Ruxsat yo'q", show_alert=True)
+        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
         return
 
     category_id = int(call.data.replace("cat_menu_", ""))
@@ -165,22 +171,24 @@ async def category_menu(call: CallbackQuery):
     try:
         c = db.query(Category).filter(Category.id == category_id).first()
         if not c:
-            await call.message.answer("Kategoriya topilmadi.")
+            await call.message.answer("РљР°С‚РµРіРѕСЂРёСЏ РЅРµ РЅР°Р№РґРµРЅР°.")
             await call.answer()
             return
 
-        status_text = "Aktiv" if c.is_active else "Yashirilgan"
+        status_text = "РђРєС‚РёРІРЅР°СЏ" if c.is_active else "РЎРєСЂС‹С‚Р°СЏ"
 
         buttons = [
-            [InlineKeyboardButton(
-                text="рџљ« Yashirish" if c.is_active else "вњ… Aktiv qilish",
-                callback_data=f"cat_toggle_{c.id}"
-            )],
-            [InlineKeyboardButton(text="в¬…пёЏ Kategoriyalar", callback_data="categories_list")]
+            [
+                InlineKeyboardButton(
+                    text="РЎРєСЂС‹С‚СЊ" if c.is_active else "РђРєС‚РёРІРёСЂРѕРІР°С‚СЊ",
+                    callback_data=f"cat_toggle_{c.id}"
+                )
+            ],
+            [InlineKeyboardButton(text="РќР°Р·Р°Рґ Рє РєР°С‚РµРіРѕСЂРёСЏРј", callback_data="categories_list")],
         ]
 
         await call.message.answer(
-            f"рџ—‚ {c.name}\nStatus: {status_text}",
+            f"РљР°С‚РµРіРѕСЂРёСЏ: {c.name}\nРЎС‚Р°С‚СѓСЃ: {status_text}",
             reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
         )
     finally:
@@ -192,7 +200,7 @@ async def category_menu(call: CallbackQuery):
 @router.callback_query(F.data.startswith("cat_toggle_"))
 async def category_toggle(call: CallbackQuery):
     if not is_admin(call.from_user.id):
-        await call.answer("Ruxsat yo'q", show_alert=True)
+        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
         return
 
     category_id = int(call.data.replace("cat_toggle_", ""))
@@ -203,7 +211,7 @@ async def category_toggle(call: CallbackQuery):
         if c:
             c.is_active = not c.is_active
             db.commit()
-            await call.message.answer("вњ… Kategoriya statusi o'zgartirildi.")
+            await call.message.answer("РЎС‚Р°С‚СѓСЃ РєР°С‚РµРіРѕСЂРёРё РёР·РјРµРЅС‘РЅ.")
     finally:
         db.close()
 
@@ -213,24 +221,31 @@ async def category_toggle(call: CallbackQuery):
 @router.callback_query(F.data == "add_product")
 async def add_product_start(call: CallbackQuery, state: FSMContext):
     if not is_admin(call.from_user.id):
-        await call.answer("Ruxsat yo'q", show_alert=True)
+        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
         return
 
     db = SessionLocal()
     try:
-        categories = db.query(Category).filter(Category.is_active == True).order_by(Category.name.asc()).all()
+        categories = (
+            db.query(Category)
+            .filter(Category.is_active == True)
+            .order_by(Category.name.asc())
+            .all()
+        )
 
         if not categories:
-            await call.message.answer("Avval kategoriya qo'shing.", reply_markup=menu())
+            await call.message.answer("РЎРЅР°С‡Р°Р»Р° РґРѕР±Р°РІСЊС‚Рµ РєР°С‚РµРіРѕСЂРёСЋ.", reply_markup=menu())
             await call.answer()
             return
 
         buttons = []
         for c in categories:
-            buttons.append([InlineKeyboardButton(text=c.name, callback_data=f"ap_cat_{c.id}")])
+            buttons.append([
+                InlineKeyboardButton(text=c.name, callback_data=f"ap_cat_{c.id}")
+            ])
 
         await call.message.answer(
-            "Mahsulot kategoriyasini tanlang:",
+            "Р’С‹Р±РµСЂРёС‚Рµ РєР°С‚РµРіРѕСЂРёСЋ С‚РѕРІР°СЂР°:",
             reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
         )
         await state.set_state(AddProduct.category)
@@ -244,7 +259,7 @@ async def add_product_start(call: CallbackQuery, state: FSMContext):
 async def product_category(call: CallbackQuery, state: FSMContext):
     category_id = int(call.data.replace("ap_cat_", ""))
     await state.update_data(category_id=category_id)
-    await call.message.answer("Mahsulot nomini yuboring:")
+    await call.message.answer("РћС‚РїСЂР°РІСЊС‚Рµ РЅР°Р·РІР°РЅРёРµ С‚РѕРІР°СЂР°:")
     await state.set_state(AddProduct.name)
     await call.answer()
 
@@ -252,7 +267,7 @@ async def product_category(call: CallbackQuery, state: FSMContext):
 @router.message(AddProduct.name)
 async def product_name(message: Message, state: FSMContext):
     await state.update_data(name=message.text.strip())
-    await message.answer("Narxini yuboring. Masalan: 25000")
+    await message.answer("РћС‚РїСЂР°РІСЊС‚Рµ С†РµРЅСѓ. РќР°РїСЂРёРјРµСЂ: 25000")
     await state.set_state(AddProduct.price)
 
 
@@ -261,7 +276,7 @@ async def product_price(message: Message, state: FSMContext):
     digits = re.sub(r"\D", "", message.text or "")
     price = int(digits) if digits else 0
     await state.update_data(price=price)
-    await message.answer("Tavsif yuboring. Tavsif kerak bo'lmasa - yuboring:")
+    await message.answer("РћС‚РїСЂР°РІСЊС‚Рµ РѕРїРёСЃР°РЅРёРµ С‚РѕРІР°СЂР°. Р•СЃР»Рё РѕРїРёСЃР°РЅРёРµ РЅРµ РЅСѓР¶РЅРѕ, РѕС‚РїСЂР°РІСЊС‚Рµ -")
     await state.set_state(AddProduct.description)
 
 
@@ -269,7 +284,7 @@ async def product_price(message: Message, state: FSMContext):
 async def product_description(message: Message, state: FSMContext):
     description = "" if message.text.strip() == "-" else message.text.strip()
     await state.update_data(description=description)
-    await message.answer("Mahsulot rasmini yuboring. Rasm kerak bo'lmasa - yuboring:")
+    await message.answer("РћС‚РїСЂР°РІСЊС‚Рµ С„РѕС‚Рѕ С‚РѕРІР°СЂР°. Р•СЃР»Рё С„РѕС‚Рѕ РЅРµ РЅСѓР¶РЅРѕ, РѕС‚РїСЂР°РІСЊС‚Рµ -")
     await state.set_state(AddProduct.image)
 
 
@@ -280,7 +295,7 @@ async def product_image(message: Message, state: FSMContext, bot: Bot):
     if message.photo:
         photo = message.photo[-1]
         image_name = f"tg_{photo.file_unique_id}.jpg"
-        destination = Path(settings.UPLOAD_DIR) / image_name
+        destination = settings.UPLOAD_DIR / image_name
         await bot.download(photo.file_id, destination=destination)
 
     data = await state.get_data()
@@ -295,15 +310,15 @@ async def product_image(message: Message, state: FSMContext, bot: Bot):
             image=image_name,
             is_active=True,
             is_orderable=False,
-            order_fields=""
+            order_fields="",
         )
         db.add(product)
         db.commit()
 
         await message.answer(
-            f"вњ… Mahsulot qo'shildi!\n\n"
-            f"рџ“¦ {product.name}\n"
-            f"рџ’° {product.price} so'm",
+            f"РўРѕРІР°СЂ РґРѕР±Р°РІР»РµРЅ!\n\n"
+            f"РќР°Р·РІР°РЅРёРµ: {product.name}\n"
+            f"Р¦РµРЅР°: {product.price} СЃСѓРј",
             reply_markup=menu()
         )
     finally:
@@ -315,7 +330,7 @@ async def product_image(message: Message, state: FSMContext, bot: Bot):
 @router.callback_query(F.data == "products_list")
 async def products_list(call: CallbackQuery):
     if not is_admin(call.from_user.id):
-        await call.answer("Ruxsat yo'q", show_alert=True)
+        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
         return
 
     db = SessionLocal()
@@ -323,21 +338,24 @@ async def products_list(call: CallbackQuery):
         products = db.query(Product).order_by(Product.id.desc()).limit(30).all()
 
         if not products:
-            await call.message.answer("Mahsulot yo'q.", reply_markup=back_menu())
+            await call.message.answer("РўРѕРІР°СЂРѕРІ РїРѕРєР° РЅРµС‚.", reply_markup=back_menu())
             await call.answer()
             return
 
         buttons = []
         for p in products:
-            status = "вњ…" if p.is_active else "рџљ«"
+            status = "РђРєС‚РёРІРЅС‹Р№" if p.is_active else "РЎРєСЂС‹С‚С‹Р№"
             buttons.append([
-                InlineKeyboardButton(text=f"{status} {p.name}", callback_data=f"prod_menu_{p.id}")
+                InlineKeyboardButton(
+                    text=f"{p.name} вЂ” {status}",
+                    callback_data=f"prod_menu_{p.id}"
+                )
             ])
 
-        buttons.append([InlineKeyboardButton(text="в¬…пёЏ Bosh menyu", callback_data="main_menu")])
+        buttons.append([InlineKeyboardButton(text="РќР°Р·Р°Рґ РІ РјРµРЅСЋ", callback_data="main_menu")])
 
         await call.message.answer(
-            "Mahsulotlar:",
+            "РЎРїРёСЃРѕРє С‚РѕРІР°СЂРѕРІ:",
             reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
         )
     finally:
@@ -349,7 +367,7 @@ async def products_list(call: CallbackQuery):
 @router.callback_query(F.data.startswith("prod_menu_"))
 async def product_menu(call: CallbackQuery):
     if not is_admin(call.from_user.id):
-        await call.answer("Ruxsat yo'q", show_alert=True)
+        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
         return
 
     product_id = int(call.data.replace("prod_menu_", ""))
@@ -358,31 +376,35 @@ async def product_menu(call: CallbackQuery):
     try:
         p = db.query(Product).filter(Product.id == product_id).first()
         if not p:
-            await call.message.answer("Mahsulot topilmadi.")
+            await call.message.answer("РўРѕРІР°СЂ РЅРµ РЅР°Р№РґРµРЅ.")
             await call.answer()
             return
 
-        status_text = "Aktiv" if p.is_active else "Yashirilgan"
+        status_text = "РђРєС‚РёРІРЅС‹Р№" if p.is_active else "РЎРєСЂС‹С‚С‹Р№"
         category_name = p.category.name if p.category else "-"
 
         buttons = [
-            [InlineKeyboardButton(
-                text="рџљ« Yashirish" if p.is_active else "вњ… Aktiv qilish",
-                callback_data=f"prod_toggle_{p.id}"
-            )],
-            [InlineKeyboardButton(text="в¬…пёЏ Mahsulotlar", callback_data="products_list")]
+            [
+                InlineKeyboardButton(
+                    text="РЎРєСЂС‹С‚СЊ" if p.is_active else "РђРєС‚РёРІРёСЂРѕРІР°С‚СЊ",
+                    callback_data=f"prod_toggle_{p.id}"
+                )
+            ],
+            [InlineKeyboardButton(text="РќР°Р·Р°Рґ Рє С‚РѕРІР°СЂР°Рј", callback_data="products_list")],
         ]
 
         text = (
-            f"рџ“¦ {p.name}\n"
-            f"рџ—‚ Kategoriya: {category_name}\n"
-            f"рџ’° Narx: {p.price} so'm\n"
-            f"рџ“Њ Status: {status_text}"
+            f"РўРѕРІР°СЂ: {p.name}\n"
+            f"РљР°С‚РµРіРѕСЂРёСЏ: {category_name}\n"
+            f"Р¦РµРЅР°: {p.price} СЃСѓРј\n"
+            f"РЎС‚Р°С‚СѓСЃ: {status_text}"
         )
 
-        if p.image and (settings.UPLOAD_DIR / p.image).exists():
+        image_path = settings.UPLOAD_DIR / p.image if p.image else None
+
+        if image_path and image_path.exists():
             await call.message.answer_photo(
-                photo=(settings.UPLOAD_DIR / p.image).open("rb"),
+                photo=FSInputFile(str(image_path)),
                 caption=text,
                 reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
             )
@@ -400,7 +422,7 @@ async def product_menu(call: CallbackQuery):
 @router.callback_query(F.data.startswith("prod_toggle_"))
 async def product_toggle(call: CallbackQuery):
     if not is_admin(call.from_user.id):
-        await call.answer("Ruxsat yo'q", show_alert=True)
+        await call.answer("РќРµС‚ РґРѕСЃС‚СѓРїР°", show_alert=True)
         return
 
     product_id = int(call.data.replace("prod_toggle_", ""))
@@ -411,7 +433,7 @@ async def product_toggle(call: CallbackQuery):
         if p:
             p.is_active = not p.is_active
             db.commit()
-            await call.message.answer("вњ… Mahsulot statusi o'zgartirildi.")
+            await call.message.answer("РЎС‚Р°С‚СѓСЃ С‚РѕРІР°СЂР° РёР·РјРµРЅС‘РЅ.")
     finally:
         db.close()
 
@@ -420,12 +442,12 @@ async def product_toggle(call: CallbackQuery):
 
 async def start_bot():
     if not settings.BOT_TOKEN or settings.BOT_TOKEN == "YOUR_BOT_TOKEN_HERE":
-        print("BOT_TOKEN .env faylida yozilmagan")
+        print("BOT_TOKEN РЅРµ СѓРєР°Р·Р°РЅ. Р‘РѕС‚ РЅРµ Р·Р°РїСѓС‰РµРЅ.")
         return
 
     bot = Bot(token=settings.BOT_TOKEN)
     dp = Dispatcher(storage=MemoryStorage())
     dp.include_router(router)
 
-    print("Telegram bot ishga tushdi")
+    print("Telegram Р±РѕС‚ Р·Р°РїСѓС‰РµРЅ")
     await dp.start_polling(bot)
