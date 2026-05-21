@@ -888,5 +888,105 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+
+<!-- ONLY_PLUS_MINUS_SIZE_FIX_START -->
+<style>
+/* Faqat - va + tugmalarini tartibli kichik qilish */
+body .agent-mini-card .qty-control,
+body .order-product-card .qty-control,
+body .qty-control {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    width: 100% !important;
+    max-width: 118px !important;
+    margin: 8px auto 0 !important;
+    grid-template-columns: none !important;
+}
+
+body .agent-mini-card .qty-btn,
+body .order-product-card .qty-btn,
+body .qty-btn,
+body button.minus-btn,
+body button.plus-btn {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    max-width: 30px !important;
+    max-height: 30px !important;
+    padding: 0 !important;
+    border-radius: 10px !important;
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 30px !important;
+}
+
+body .agent-mini-card .qty-number,
+body .order-product-card .qty-number,
+body .qty-number {
+    width: 32px !important;
+    height: 30px !important;
+    min-width: 32px !important;
+    min-height: 30px !important;
+    max-width: 32px !important;
+    max-height: 30px !important;
+    padding: 0 !important;
+    border-radius: 10px !important;
+    font-size: 15px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 32px !important;
+}
+
+@media (max-width: 640px) {
+    body .agent-mini-card .qty-control,
+    body .order-product-card .qty-control,
+    body .qty-control {
+        gap: 6px !important;
+        max-width: 106px !important;
+    }
+
+    body .agent-mini-card .qty-btn,
+    body .order-product-card .qty-btn,
+    body .qty-btn,
+    body button.minus-btn,
+    body button.plus-btn {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        min-height: 28px !important;
+        max-width: 28px !important;
+        max-height: 28px !important;
+        font-size: 17px !important;
+        border-radius: 9px !important;
+        flex-basis: 28px !important;
+    }
+
+    body .agent-mini-card .qty-number,
+    body .order-product-card .qty-number,
+    body .qty-number {
+        width: 30px !important;
+        height: 28px !important;
+        min-width: 30px !important;
+        min-height: 28px !important;
+        max-width: 30px !important;
+        max-height: 28px !important;
+        font-size: 14px !important;
+        border-radius: 9px !important;
+        flex-basis: 30px !important;
+    }
+}
+</style>
+<!-- ONLY_PLUS_MINUS_SIZE_FIX_END -->
+
 </body>
 </html>
