@@ -2,14 +2,18 @@
 (function () {
     const CART_KEY = "kataloga_agent_cart_v1";
     const t = window.AGENT_I18N || {};
-    const currency = t.currency || "СЃРѕРјРѕРЅ";
+    const lang = window.AGENT_LANG || "ru";
+    const currency = (t.currency || "сомон").replace("сомонӣ", "сомон").replace("сомони", "сомон").replace("сомонй", "сомон");
 
-    
     function unitLabel() {
-        return window.AGENT_LANG === "uz" ? "dona" : "\u0448\u0442";
+        return lang === "uz" ? "dona" : "шт";
     }
 
-function money(value) {
+    function clearLabel() {
+        return lang === "uz" ? "Tozalash" : "Очистить";
+    }
+
+    function money(value) {
         const n = Number(value || 0);
         return n.toLocaleString("ru-RU") + " " + currency;
     }
@@ -63,6 +67,15 @@ function money(value) {
         if (floating) floating.textContent = count;
     }
 
+    function escapeHtml(value) {
+        return String(value || "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
     function renderCartModal() {
         const cart = loadCart();
         const box = document.getElementById("cartItemsBox");
@@ -73,7 +86,7 @@ function money(value) {
         const items = Object.values(cart).filter(item => Number(item.quantity) > 0);
 
         if (items.length === 0) {
-            box.innerHTML = `<div class="cart-empty">${t.empty_cart || "Zakaz hali bo'sh"}</div>`;
+            box.innerHTML = `<div class="cart-empty">${t.empty_cart || "Заказ пока пуст"}</div>`;
         } else {
             box.innerHTML = items.map(item => {
                 const lineTotal = Number(item.price || 0) * Number(item.quantity || 0);
@@ -81,7 +94,7 @@ function money(value) {
                     <div class="cart-item">
                         <div>
                             <div class="cart-item-name">${escapeHtml(item.name)}</div>
-                            <div class="cart-item-meta">${item.quantity} Г— ${money(item.price)}</div>
+                            <div class="cart-item-meta">${item.quantity} ${unitLabel()} — ${money(item.price)}</div>
                         </div>
                         <div class="cart-item-total">${money(lineTotal)}</div>
                     </div>
@@ -90,15 +103,12 @@ function money(value) {
         }
 
         totalBox.textContent = money(cartTotal(cart));
-    }
 
-    function escapeHtml(value) {
-        return String(value || "")
-            .replaceAll("&", "&amp;")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")
-            .replaceAll('"', "&quot;")
-            .replaceAll("'", "&#039;");
+        const clearBtn = document.getElementById("clearCartBtn");
+        if (clearBtn) clearBtn.textContent = clearLabel();
+
+        const closeBtn = document.getElementById("closeCartBtn");
+        if (closeBtn) closeBtn.innerHTML = "&times;";
     }
 
     function openCart() {
@@ -111,6 +121,8 @@ function money(value) {
     }
 
     function changeQty(productId, delta) {
+        if (!productId) return;
+
         const cart = loadCart();
         const current = cart[productId] || getProductData(productId);
 
@@ -136,13 +148,13 @@ function money(value) {
         const items = Object.values(cart).filter(item => Number(item.quantity) > 0);
 
         if (!storeName) {
-            alert(t.fill_store || "Magazin nomini yozing");
+            alert(t.fill_store || "Введите название магазина");
             storeInput?.focus();
             return;
         }
 
         if (items.length === 0) {
-            alert(t.add_products || "Avval mahsulot tanlang");
+            alert(t.add_products || "Сначала выберите товар");
             return;
         }
 
@@ -175,10 +187,10 @@ function money(value) {
             renderCartModal();
             closeCart();
 
-            alert((t.success || "Zakaz qabul qilindi") + " #" + result.order_id);
+            alert((t.success || "Заказ принят") + " #" + result.order_id);
             window.location.reload();
         } catch (e) {
-            alert("Xatolik: zakaz yuborilmadi");
+            alert("Ошибка: заказ не отправлен");
         } finally {
             if (btn) btn.disabled = false;
         }
@@ -187,22 +199,26 @@ function money(value) {
     document.addEventListener("click", function (event) {
         const plus = event.target.closest(".plus-btn");
         if (plus) {
+            event.preventDefault();
             changeQty(plus.dataset.productId, 1);
             return;
         }
 
         const minus = event.target.closest(".minus-btn");
         if (minus) {
+            event.preventDefault();
             changeQty(minus.dataset.productId, -1);
             return;
         }
 
         if (event.target.closest("#openCartBtn") || event.target.closest("#floatingCartBtn")) {
+            event.preventDefault();
             openCart();
             return;
         }
 
         if (event.target.closest("#closeCartBtn")) {
+            event.preventDefault();
             closeCart();
             return;
         }
@@ -213,6 +229,7 @@ function money(value) {
         }
 
         if (event.target.closest("#clearCartBtn")) {
+            event.preventDefault();
             localStorage.removeItem(CART_KEY);
             updateQtyViews({});
             renderCartModal();
@@ -220,12 +237,22 @@ function money(value) {
         }
 
         if (event.target.closest("#confirmOrderBtn")) {
+            event.preventDefault();
             confirmOrder();
             return;
         }
     });
 
     document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".minus-btn").forEach(btn => btn.textContent = "-");
+        document.querySelectorAll(".plus-btn").forEach(btn => btn.textContent = "+");
+
+        const closeBtn = document.getElementById("closeCartBtn");
+        if (closeBtn) closeBtn.innerHTML = "&times;";
+
+        const clearBtn = document.getElementById("clearCartBtn");
+        if (clearBtn) clearBtn.textContent = clearLabel();
+
         updateQtyViews(loadCart());
     });
 })();
