@@ -30,7 +30,7 @@ TEXTS = {
         "no_image": "Rasm yo'q",
         "not_found": "Mahsulot topilmadi",
         "not_found_text": "Bu kategoriyada hozircha mahsulot yo'q.",
-        "currency": "so'm",
+        "currency": "СЃРѕРјРѕРЅУЈ",
 
         "order_btn": "Zakazi",
         "order_title": "Zakazi",
@@ -63,7 +63,7 @@ TEXTS = {
         "no_image": "\u041d\u0435\u0442 \u0444\u043e\u0442\u043e",
         "not_found": "\u0422\u043e\u0432\u0430\u0440 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d",
         "not_found_text": "\u0412 \u044d\u0442\u043e\u0439 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438 \u043f\u043e\u043a\u0430 \u043d\u0435\u0442 \u0442\u043e\u0432\u0430\u0440\u043e\u0432.",
-        "currency": "\u0441\u0443\u043c",
+        "currency": "\u0441\u043e\u043c\u043e\u043d\u04e3",
 
         "order_btn": "\u0417\u0430\u043a\u0430\u0437",
         "order_title": "\u0417\u0430\u043a\u0430\u0437",
