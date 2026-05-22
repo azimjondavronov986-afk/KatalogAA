@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 import re
-from pathlib import Path
-from sqlalchemy import text
 
 from aiogram import Bot, Dispatcher, Router, F
 from aiogram.filters import Command
@@ -443,93 +441,6 @@ async def product_toggle(call: CallbackQuery):
         db.close()
 
     await call.answer()
-
-
-# KATALOGAA_CLEAR_COMMAND_START
-
-def _db_table_exists(db, table_name: str) -> bool:
-    row = db.execute(
-        text("SELECT name FROM sqlite_master WHERE type='table' AND name=:name"),
-        {"name": table_name}
-    ).fetchone()
-    return row is not None
-
-
-def _clear_uploads_folder():
-    try:
-        upload_dir = Path(settings.UPLOAD_DIR)
-        upload_dir.mkdir(parents=True, exist_ok=True)
-
-        for item in upload_dir.iterdir():
-            if item.name == ".gitkeep":
-                continue
-
-            if item.is_file():
-                item.unlink(missing_ok=True)
-            elif item.is_dir():
-                shutil.rmtree(item, ignore_errors=True)
-    except Exception:
-        pass
-
-
-def _clear_catalog_database():
-    db = SessionLocal()
-    try:
-        tables = [
-            "order_items",
-            "order_item",
-            "orders",
-            "order",
-            "products",
-            "product",
-            "categories",
-            "category",
-        ]
-
-        for table in tables:
-            if _db_table_exists(db, table):
-                db.execute(text(f'DELETE FROM "{table}"'))
-
-        if _db_table_exists(db, "sqlite_sequence"):
-            for table in tables:
-                db.execute(
-                    text('DELETE FROM sqlite_sequence WHERE name=:name'),
-                    {"name": table}
-                )
-
-        db.commit()
-    finally:
-        db.close()
-
-
-@router.message(Command("clear_catalog"))
-async def clear_catalog_info(message: Message):
-    if not is_admin(message.from_user.id):
-        await message.answer("У вас нет доступа.")
-        return
-
-    await message.answer(
-        "Внимание! Будут удалены все категории, товары, заказы и изображения.\n\n"
-        "Для подтверждения отправьте команду:\n"
-        "/clear_catalog_ha"
-    )
-
-
-@router.message(Command("clear_catalog_ha"))
-async def clear_catalog_confirm(message: Message):
-    if not is_admin(message.from_user.id):
-        await message.answer("У вас нет доступа.")
-        return
-
-    _clear_catalog_database()
-    _clear_uploads_folder()
-
-    await message.answer(
-        "Каталог очищен.\n"
-        "Теперь можно добавлять категории и товары с нуля."
-    )
-
-# KATALOGAA_CLEAR_COMMAND_END
 
 
 async def start_bot():
